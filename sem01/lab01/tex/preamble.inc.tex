@@ -1,0 +1,46 @@
+% russian language
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+% searchable and copyable
+\usepackage{cmap}
+
+% Times New Roman
+\usepackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+
+% Margins
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=10mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+% Titles
+\usepackage{titlesec}
+%\titleformat{\section}
+%{\normalsize\bfseries}
+%{\thesection}
+%{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{21pt}
+%\titlespacing*{\section}{\parindent}{*4}{*4}
+%\titlespacing*{\subsection}{\parindent}{*4}{*4}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{20pt}{\LARGE\bfseries}
+%\titleformat{\section}{\Large\bfseries}{\thesection}{20pt}{\Large\bfseries}
+
+% Spacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\linespread{1.25}
+
+% Numbering
+\setcounter{page}{2}
+
+% Links
+\usepackage[unicode, pdftex]{hyperref}
+
+% Listings
+\usepackage{minted}
+
+

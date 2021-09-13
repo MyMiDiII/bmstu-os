@@ -1,0 +1,10 @@
+# TEX
+*.aux
+*.log
+*.bbl
+*.blg
+*.dvi
+*.out
+*.toc
+*report.pdf
+*title.pdf
