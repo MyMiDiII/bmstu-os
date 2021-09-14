@@ -19,16 +19,17 @@
 
 % Titles
 \usepackage{titlesec}
-%\titleformat{\section}
-%{\normalsize\bfseries}
-%{\thesection}
-%{1em}{}
-\titlespacing*{\chapter}{0pt}{-30pt}{21pt}
-%\titlespacing*{\section}{\parindent}{*4}{*4}
-%\titlespacing*{\subsection}{\parindent}{*4}{*4}
-\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{20pt}{\LARGE\bfseries}
-%\titleformat{\section}{\Large\bfseries}{\thesection}{20pt}{\Large\bfseries}
-
+\titleformat{\section}
+	{\normalsize\bfseries}
+	{\thesection}
+	{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{20pt}{8pt}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+\usepackage{titlesec}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{10pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{10pt}{\Large\bfseries}
+    
 % Spacing
 \usepackage{indentfirst}
 \setlength{\parindent}{1.25cm}
@@ -43,3 +44,14 @@
 % Listings
 \usepackage{listings}
 \usepackage{minted}
+\usepackage{verbatim}
+
+% Images
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[h!]
+		\center{\includegraphics[height=#1]{data/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
