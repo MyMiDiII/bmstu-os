@@ -43,15 +43,23 @@
 
 % Listings
 \usepackage{listings}
-\usepackage{minted}
+\usepackage[newfloat]{minted}
 \usepackage{verbatim}
 
 % Images
 \usepackage{graphicx}
 \newcommand{\img}[3] {
 	\begin{figure}[h!]
-		\center{\includegraphics[height=#1]{data/#2}}
+		\center{\includegraphics[height=#1]{../data/#2}}
 		\caption{#3}
 		\label{img:#2}
 	\end{figure}
 }
+
+% Captions
+\usepackage[figurename=Рисунок,labelsep=endash,
+            justification=raggedright]{caption}
+
+% Lists
+\usepackage{enumitem}
+\renewcommand{\labelitemi}{$-$}

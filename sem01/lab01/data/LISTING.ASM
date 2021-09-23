@@ -69,7 +69,7 @@
 020A:07A8  B0 20                mov al,20h      ; ' '
 020A:07AA  E6 20                out 20h,al      ; port 20h, 8259-1 int command
                                                 ; al = 20h, end of interrupt
-; восстановление регистров
+; восстановление регистров DX, AX, DS, ES
 020A:07AC  5A                   pop dx
 020A:07AD  58                   pop ax
 020A:07AE  1F                   pop ds
