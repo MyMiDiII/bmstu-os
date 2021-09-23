@@ -1,0 +1,301 @@
+      lab01p1.lst                    Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 1
+; call ø øøøøøøø øø int øø øøøøøøøøø ø øøøø øøøøøøø øøøøøø,
+; øøøøøøø øøøøø øøøø ø øøøø øøøøøøøøøø øøøøøøø AX,
+; øøøøøøø øø øøøøøø øø 1Ch øøøøøøøøøøøøøøø ø øøøøøøø øøøøøø ø øøøøøøø iret
+
+020A:0746  E8 0070              call    sub_1           ; (07B9)
+020A:0749  06                   push    es
+020A:074A  1E                   push    ds
+020A:074B  50                   push    ax
+020A:074C  52                   push    dx
+020A:074D  B8 0040              mov ax,40h
+020A:0750  8E D8                mov ds,ax
+020A:0752  33 C0                xor ax,ax           ; Zero register
+020A:0754  8E C0                mov es,ax
+020A:0756  FF 06 006C               inc word ptr ds:[6Ch]   ; (0040:006C=2E0h)
+020A:075A  75 04                jnz loc_1           ; Jump if not zero
+020A:075C  FF 06 006E               inc word ptr ds:[6Eh]   ; (0040:006E=16h)
+020A:0760           loc_1:                      ;  xref 020A:075A
+020A:0760  83 3E 006E 18            cmp word ptr ds:[6Eh],18h   ; (0040:006E=16h)
+020A:0765  75 15                jne loc_2           ; Jump if not equal
+020A:0767  81 3E 006C 00B0          cmp word ptr ds:[6Ch],0B0h  ; (0040:006C=2E0h)
+020A:076D  75 0D                jne loc_2           ; Jump if not equal
+020A:076F  A3 006E              mov word ptr ds:[6Eh],ax    ; (0040:006E=16h)
+020A:0772  A3 006C              mov word ptr ds:[6Ch],ax    ; (0040:006C=2E0h)
+020A:0775  C6 06 0070 01            mov byte ptr ds:[70h],1 ; (0040:0070=0)
+020A:077A  0C 08                or  al,8
+020A:077C           loc_2:                      ;  xref 020A:0765, 076D
+020A:077C  50                   push    ax
+020A:077D  FE 0E 0040               dec byte ptr ds:[40h]   ; (0040:0040=94h)
+020A:0781  75 0B                jnz loc_3           ; Jump if not zero
+020A:0783  80 26 003F F0            and byte ptr ds:[3Fh],0F0h  ; (0040:003F=0)
+020A:0788  B0 0C                mov al,0Ch
+020A:078A  BA 03F2              mov dx,3F2h
+020A:078D  EE                   out dx,al           ; port 3F2h, dsk0 contrl output
+020A:078E           loc_3:                      ;  xref 020A:0781
+020A:078E  58                   pop ax
+020A:078F  F7 06 0314 0004          test    word ptr ds:[314h],4    ; (0040:0314=3200h)
+020A:0795  75 0C                jnz loc_4           ; Jump if not zero
+020A:0797  9F                   lahf                ; Load ah from flags
+020A:0798  86 E0                xchg    ah,al
+020A:079A  50                   push    ax
+020A:079B  26: FF 1E 0070           call    dword ptr es:[70h]  ; (0000:0070=6ADh)
+020A:07A0  EB 03                jmp short loc_5     ; (07A5)
+020A:07A2  90                   nop
+020A:07A3           loc_4:                      ;  xref 020A:0795
+020A:07A3  CD 1C                int 1Ch         ; Timer break (call each 18.2ms)
+020A:07A5           loc_5:                      ;  xref 020A:07A0
+020A:07A5  E8 0011              call    sub_1           ; (07B9)
+020A:07A8  B0 20                mov al,20h          ; ' '
+020A:07AA  E6 20                out 20h,al          ; port 20h, 8259-1 int command
+                                        ;  al = 20h, end of interrupt
+020A:07AC  5A                   pop dx
+020A:07AD  58                   pop ax
+020A:07AE  1F                   pop ds
+020A:07AF  07                   pop es
+020A:07B0  E9 FE99              jmp $-164h
+020A:07B3  C4                   db  0C4h
+020A:07B4  C4 0E 93E9               les cx,dword ptr ds:[93E9h] ; (0000:93E9=0F980h) Load 32 bit ptr
+020A:07B8  FE                   db  0FEh
+  
+                ;ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+                ;                  SUBROUTINE
+     lab01p1.lst                   Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 2
+
+                ;
+                ;         Called from:   020A:0746, 07A5
+                ;‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+  
+                sub_1       proc    near
+020A:07B9  1E                   push    ds
+020A:07BA  50                   push    ax
+020A:07BB  B8 0040              mov ax,40h
+020A:07BE  8E D8                mov ds,ax
+020A:07C0  9F                   lahf                ; Load ah from flags
+020A:07C1  F7 06 0314 2400          test    word ptr ds:[314h],2400h    ; (0040:0314=3200h)
+020A:07C7  75 0C                jnz loc_7           ; Jump if not zero
+020A:07C9  F0> 81 26 0314 FDFF             lock and word ptr ds:[314h],0FDFFh   ; (0040:0314=3200h)
+020A:07D0           loc_6:                      ;  xref 020A:07D6
+020A:07D0  9E                   sahf                ; Store ah into flags
+020A:07D1  58                   pop ax
+020A:07D2  1F                   pop ds
+020A:07D3  EB 03                jmp short loc_ret_8     ; (07D8)
+020A:07D5           loc_7:                      ;  xref 020A:07C7
+020A:07D5  FA                   cli             ; Disable interrupts
+020A:07D6  EB F8                jmp short loc_6     ; (07D0)
+  
+020A:07D8           loc_ret_8:                  ;  xref 020A:07D3
+020A:07D8  C3                   retn
+                sub_1       endp
+  
+020A:07D9  1E                   push    ds
+020A:07DA  50                   push    ax
+020A:07DB  B8 0040              mov ax,40h
+020A:07DE  8E D8                mov ds,ax
+020A:07E0  9F                   lahf                ; Load ah from flags
+020A:07E1  F7 06 0314 0003          test    word ptr ds:[314h],3    ; (0040:0314=3200h)
+020A:07E7  75 14                jnz loc_10          ; Jump if not zero
+020A:07E9  F7 06 0314 2400          test    word ptr ds:[314h],2400h    ; (0040:0314=3200h)
+020A:07EF  75 0C                jnz loc_10          ; Jump if not zero
+020A:07F1  F0> 81 0E 0314 0200             lock or  word ptr ds:[314h],200h ; (0040:0314=3200h)
+020A:07F8           loc_9:                      ;  xref 020A:07FE
+020A:07F8  9E                   sahf                ; Store ah into flags
+020A:07F9  58                   pop ax
+020A:07FA  1F                   pop ds
+020A:07FB  EB 03                jmp short loc_ret_11    ; (0800)
+020A:07FD           loc_10:                     ;  xref 020A:07E7, 07EF
+020A:07FD  FB                   sti             ; Enable interrupts
+020A:07FE  EB F8                jmp short loc_9     ; (07F8)
+  
+020A:0800           loc_ret_11:                 ;  xref 020A:07FB
+020A:0800  C3                   retn
+020A:0801  00 00                add [bx+si],al
+020A:0803  00 00                add [bx+si],al
+020A:0805  00 2E 06FF               add byte ptr ds:[6FFh],ch   ; (020A:06FF=0CDh)
+020A:0809  04 08                add al,8
+020A:080B  3D 13FF              cmp ax,13FFh
+020A:080E  75 5B                jne loc_14          ; Jump if not equal
+020A:0810  83 F9 01             cmp cx,1
+020A:0813  74 40                je  loc_12          ; Jump if equal
+020A:0815  56                   push    si
+020A:0816 .BE 00A4              mov si,offset ds:[0A4h] ; (020A:00A4=8)
+     lab01p1.lst                   Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 3
+
+020A:0819  2E: 2B 36 0802           sub si,word ptr cs:[802h]   ; (020A:0802=0)
+020A:081E  3B CE                cmp cx,si
+020A:0820  73 3E                jae loc_13          ; Jump if above or =
+020A:0822  57                   push    di
+020A:0823  51                   push    cx
+020A:0824  52                   push    dx
+020A:0825  1E                   push    ds
+020A:0826  06                   push    es
+020A:0827  8C C2                mov dx,es
+020A:0829  8E DA                mov ds,dx
+020A:082B  BA B000              mov dx,0B000h
+020A:082E  8E C2                mov es,dx
+020A:0830  8B D1                mov dx,cx
+020A:0832  8B F7                mov si,di
+020A:0834  2E: 8B 3E 0802           mov di,word ptr cs:[802h]   ; (020A:0802=0)
+020A:0839  FC                   cld             ; Clear direction
+020A:083A  D1 E9                shr cx,1            ; Shift w/zeros fill
+020A:083C  F3/ A5               rep movsw           ; Rep when cx >0 Mov [si] to es:[di]
+020A:083E  80 D1 00             adc cl,0
+020A:0841  F3/ A4               rep movsb           ; Rep when cx >0 Mov [si] to es:[di]
+020A:0843  2E: 01 16 0802           add word ptr cs:[802h],dx   ; (020A:0802=0)
+020A:0848  07                   pop es
+020A:0849  1F                   pop ds
+020A:084A  5A                   pop dx
+020A:084B  59                   pop cx
+020A:084C  5F                   pop di
+020A:084D  5E                   pop si
+020A:084E  F9                   stc             ; Set carry flag
+020A:084F  2E: FF 0E 0804           dec word ptr cs:[804h]  ; (020A:0804=0)
+020A:0854  C3                   retn
+020A:0855           loc_12:                     ;  xref 020A:0813
+020A:0855  50                   push    ax
+020A:0856  B4 0E                mov ah,0Eh
+020A:0858  26: 8A 05                mov al,es:[di]
+020A:085B  E8 0012              call    sub_3           ; (0870)
+020A:085E  58                   pop ax
+020A:085F  C3                   retn
+020A:0860           loc_13:                     ;  xref 020A:0820, 087A
+020A:0860  5E                   pop si
+020A:0861  2E: FF 0E 0804           dec word ptr cs:[804h]  ; (020A:0804=0)
+020A:0866  C4                   db  0C4h
+020A:0867  C4 42 F9             les ax,dword ptr [bp+si-7]  ; Load 32 bit ptr
+020A:086A  C3                   retn
+020A:086B           loc_14:                     ;  xref 020A:080E
+020A:086B  80 FC 0E             cmp ah,0Eh
+020A:086E  75 28                jne loc_15          ; Jump if not equal
+  
+                ;ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+                ;                  SUBROUTINE
+                ;
+                ;         Called from:   020A:085B
+                ;‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹
+  
+                sub_3       proc    near
+020A:0870  56                   push    si
+020A:0871  2E: 8B 36 0802           mov si,word ptr cs:[802h]   ; (020A:0802=0)
+020A:0876  81 FE 00A4               cmp si,0A4h
+     lab01p1.lst                   Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 4
+
+020A:087A  73 E4                jae loc_13          ; Jump if above or =
+020A:087C  1E                   push    ds
+020A:087D .BE B000              mov si,offset ds:[0B000h]   ; (B000:B000=20h)
+020A:0880  8E DE                mov ds,si
+020A:0882  2E: 8B 36 0802           mov si,word ptr cs:[802h]   ; (020A:0802=0)
+020A:0887  88 04                mov [si],al
+020A:0889  46                   inc si
+020A:088A  2E: 89 36 0802           mov word ptr cs:[802h],si   ; (020A:0802=0)
+020A:088F  1F                   pop ds
+020A:0890  5E                   pop si
+020A:0891  F9                   stc             ; Set carry flag
+020A:0892  2E: FF 0E 0804           dec word ptr cs:[804h]  ; (020A:0804=0)
+020A:0897  C3                   retn
+                sub_3       endp
+  
+020A:0898           loc_15:                     ;  xref 020A:086E
+020A:0898  50                   push    ax
+020A:0899  B8 13FE              mov ax,13FEh
+020A:089C  C4                   db  0C4h
+020A:089D  C4 42 58             les ax,dword ptr [bp+si+58h]    ; Load 32 bit ptr
+020A:08A0  F8                   clc             ; Clear carry flag
+020A:08A1  2E: FF 0E 0804           dec word ptr cs:[804h]  ; (020A:0804=0)
+020A:08A6  C3                   retn
+020A:08A7  00           data_13     db  0           ;  xref 020A:08A9, 08B6
+020A:08A8  00           data_14     db  0           ;  xref 020A:08F3, 090F, 091B
+020A:08A9  2E: 80 3E 08A7 02            cmp cs:data_13,2        ; (020A:08A7=0)
+020A:08AF  75 05                jne loc_16          ; Jump if not equal
+020A:08B1  E8 FF52      ;*      call    sub_2           ;*(0806)
+020A:08B1  E8 52 FF             db  0E8h, 52h,0FFh
+020A:08B4  72 5F                jc  loc_22          ; Jump if carry Set
+020A:08B6           loc_16:                     ;  xref 020A:08AF
+020A:08B6  2E: 80 3E 08A7 01            cmp cs:data_13,1        ; (020A:08A7=0)
+020A:08BC  74 5D                je  loc_24          ; Jump if equal
+020A:08BE  80 FC 00             cmp ah,0
+020A:08C1  74 30                je  loc_20          ; Jump if equal
+020A:08C3  80 FC 1C             cmp ah,1Ch
+020A:08C6  77 0B                ja  loc_17          ; Jump if above
+020A:08C8  80 FC 04             cmp ah,4
+020A:08CB  74 20                je  loc_19          ; Jump if equal
+020A:08CD  C4                   db  0C4h
+020A:08CE  C4 42 EB             les ax,dword ptr [bp+si-15h]    ; Load 32 bit ptr
+020A:08D1  43                   inc bx
+020A:08D2  90                   nop
+020A:08D3           loc_17:                     ;  xref 020A:08C6
+020A:08D3  80 FC 4F             cmp ah,4Fh          ; 'O'
+020A:08D6  75 06                jne loc_18          ; Jump if not equal
+020A:08D8  C4                   db  0C4h
+020A:08D9  C4 BE 73EB               les di,dword ptr [bp+73EBh] ; Load 32 bit ptr
+020A:08DD  90                   nop
+020A:08DE           loc_18:                     ;  xref 020A:08D6
+020A:08DE  80 FC F0             cmp ah,0F0h
+020A:08E1  72 35                jb  loc_23          ; Jump if below
+020A:08E3  80 FC F7             cmp ah,0F7h
+020A:08E6  76 05                jbe loc_19          ; Jump if below or =
+020A:08E8  80 FC FA             cmp ah,0FAh
+020A:08EB  75 2B                jne loc_23          ; Jump if not equal
+020A:08ED           loc_19:                     ;  xref 020A:08CB, 08E6, 092E, 0933
+     lab01p1.lst                   Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 5
+
+                                        ;            093B
+020A:08ED  C4                   db  0C4h
+020A:08EE  C4 BE 23EB               les di,dword ptr [bp+23EBh] ; Load 32 bit ptr
+020A:08F2  90                   nop
+020A:08F3           loc_20:                     ;  xref 020A:08C1
+020A:08F3  2E: C6 06 08A8 01            mov cs:data_14,1        ; (020A:08A8=0)
+020A:08F9  C4                   db  0C4h
+020A:08FA  C4 BE 9090               les di,dword ptr [bp-6F70h] ; Load 32 bit ptr
+020A:08FE  50                   push    ax
+020A:08FF  25 007F              and ax,7Fh
+020A:0902  3C 03                cmp al,3
+020A:0904  76 08                jbe loc_21          ; Jump if below or =
+020A:0906  3C 07                cmp al,7
+020A:0908  74 04                je  loc_21          ; Jump if equal
+020A:090A  58                   pop ax
+020A:090B  EB 0E                jmp short loc_24        ; (091B)
+020A:090D  90                   nop
+020A:090E           loc_21:                     ;  xref 020A:0904, 0908
+020A:090E  58                   pop ax
+020A:090F  2E: C6 06 08A8 00            mov cs:data_14,0        ; (020A:08A8=0)
+020A:0915           loc_22:                     ;  xref 020A:08B4, 0919
+020A:0915  E9 FD34              jmp $-2C9h
+020A:0918           loc_23:                     ;  xref 020A:08E1, 08EB
+020A:0918  F9                   stc             ; Set carry flag
+020A:0919  EB FA                jmp short loc_22        ; (0915)
+020A:091B           loc_24:                     ;  xref 020A:08BC, 090B
+020A:091B  2E: C6 06 08A8 00            mov cs:data_14,0        ; (020A:08A8=0)
+020A:0921  3D 13FF              cmp ax,13FFh
+020A:0924  74 2F        ;*      je  loc_28          ;*Jump if equal
+020A:0924  74 2F                db   74h, 2Fh
+020A:0926  80 FC F0             cmp ah,0F0h
+020A:0929  72 0D                jb  loc_25          ; Jump if below
+020A:092B  80 FC F7             cmp ah,0F7h
+020A:092E  76 BD                jbe loc_19          ; Jump if below or =
+020A:0930  80 FC FA             cmp ah,0FAh
+020A:0933  74 B8                je  loc_19          ; Jump if equal
+020A:0935  EB 19        ;*      jmp short loc_27        ;*(0950)
+020A:0935  EB 19                db  0EBh, 19h
+020A:0937  90                   nop
+020A:0938           loc_25:                     ;  xref 020A:0929
+020A:0938  80 FC 04             cmp ah,4
+020A:093B  74 B0                je  loc_19          ; Jump if equal
+020A:093D  80 FC 00             cmp ah,0
+020A:0940  75 06        ;*      jne loc_26          ;*Jump if not equal
+020A:0940  75 06                db   75h, 06h
+020A:0942  C4                   db  0C4h
+020A:0943  C4 BE 09EB               les di,dword ptr [bp+9EBh]  ; Load 32 bit ptr
+  
+  
+                 ±±±±±±±±±±±±±±±±±± Interrupt Usage Synopsis ±±±±±±±±±±±±±±±±±±
+  
+                        No Interrupts used.
+  
+                 ±±±±±±±±±±±±±±±±±± I/O Port Usage Synopsis  ±±±±±±±±±±±±±±±±±±
+  
+                        Port 20h   : 8259-1 int command
+                        Port 3F2h  : dsk0 contrl output
+     lab01p1.lst                   Sourcer Listing v3.07     9-Sep-21  10:00 pm   Page 6
+
+  

@@ -1,0 +1,65 @@
+% russian language
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+% searchable and copyable
+\usepackage{cmap}
+
+% Times New Roman
+\usepackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+
+% Margins
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=10mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+% Titles
+\usepackage{titlesec}
+\titleformat{\section}
+	{\normalsize\bfseries}
+	{\thesection}
+	{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{20pt}{8pt}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+\usepackage{titlesec}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{10pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{10pt}{\Large\bfseries}
+    
+% Spacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\linespread{1.25}
+
+% Numbering
+\setcounter{page}{2}
+
+% Links
+\usepackage[unicode, pdftex]{hyperref}
+
+% Listings
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+\usepackage{verbatim}
+
+% Images
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[h!]
+		\center{\includegraphics[height=#1]{../data/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+
+% Captions
+\usepackage[figurename=Рисунок,labelsep=endash,
+            justification=raggedright]{caption}
+
+% Lists
+\usepackage{enumitem}
+\renewcommand{\labelitemi}{$-$}
