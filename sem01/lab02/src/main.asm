@@ -29,6 +29,7 @@ stack32 ends
 
 data32 segment para 'DATA'
 ; таблица глобальных дескрипторов GDT
+; !!! 8F E 92 98 40 ???
     gdt_null    descr <>
     gdt_4gb     descr <0FFFFh,0,0,92h,0CFh,0>
     gdt_code32  descr <code32_size-1,0,0,98h,40h,0>
@@ -37,7 +38,7 @@ data32 segment para 'DATA'
     gdt_video   descr <3999,8000h,0Bh,92h,0,0>
     gdt_size = $ - gdt_null
 
-; псевдодескриптор (6 байт)
+; псевдодескриптор таблицы глобальных дескрипторов (6 байт)
     psdescr df 0
    
 ; селекторы
@@ -47,6 +48,7 @@ data32 segment para 'DATA'
     stack32s = 32
     videos   = 40 
 
+; !!! 8F E 92 98 40 ???
 ; таблица дескрипторов прерываний
     idt label byte
     idescr0_12      idescr 13 dup (<dummy,code32s,0,8Fh,0>)
@@ -56,7 +58,7 @@ data32 segment para 'DATA'
     idescr_keyboard idescr <int9h,code32s,0,0Eh,0>
     idt_size = $ - idt
 
-; псевдодекскриптор (6 байт) 
+; псевдодескриптор таблицы прерываний (6 байт) 
     ipsdescr df 0
 
 ; псевдодекскриптор таблицы прерываний реального режима
@@ -81,14 +83,11 @@ data32 segment para 'DATA'
     syml_pos   dd 80 * 8
     up_flag    db 0
 
-
 ; сообщения
     rm_msg     db 27,'[32;20mREAL MODE',27, '[0m', 13, 10, '$'
     to_pm_msg  db 27,'[32;20mAny key to enter PROTECTED MODE',27,'[0m'
                db 13, 10, '$'
     end_rm_msg db 27,'[32;20mREAL MODE again!', 27, '[0m', 13, 10, '$'
-
-    code32_size = 10
 
     data32_size = $ - gdt_null 
 data32 ends
@@ -130,6 +129,7 @@ code32 segment para public 'CODE' use32
 
     same:
         inc cnt
+; !!!  ???
 ; EOI
         mov	al, 20h 
         out	20h, al
@@ -189,6 +189,7 @@ code32 segment para public 'CODE' use32
         cmp up_flag, 1
         jne print
         
+; приведение к прописным только для букв
         cmp dl, 'a'
         jb print
         cmp dl, 'z'
@@ -203,6 +204,7 @@ code32 segment para public 'CODE' use32
         mov syml_pos, ebx
 
     allow_handle_keyboard:
+; !!! ???
         in	al, 61h
         or	al, 80h
         out	61h, al
@@ -216,7 +218,6 @@ code32 segment para public 'CODE' use32
     int9h endp
 
     count_memory proc uses ds eax ebx 
-;
         mov ax, data4gbs
         mov ds, ax
         
@@ -224,7 +225,7 @@ code32 segment para public 'CODE' use32
         mov ebx, 100000h
         mov dl, 10101110b  
 
-; оставшееся число байт из 4ГБ ( )
+; оставшееся число байт из 4ГБ
         mov	ecx, 0FFEFFFFFh
 
     iterate_through_memory:
@@ -319,9 +320,9 @@ proccess:
     mov cr0, eax
 
 ; дальний переход для загрузки CP и IP
-    db 0EAh ; код команды far jmp
+    db 0EAh        ; код команды far jmp
     dd offset real ; смещение
-    dw code16 ; селектор
+    dw code16      ; сегмент
 
     code32_size = $ - pm_begin
 code32 ends
@@ -386,13 +387,6 @@ begin:
     mov word  ptr psdescr, gdt_size - 1
     lgdt fword ptr psdescr
 
-; подготовка превдодескриптора
-    mov ax, data32
-    shl eax, 4
-    add eax, offset idt
-    mov  dword ptr ipsdescr + 2, eax 
-    mov  word ptr  ipsdescr, idt_size-1 
-
 ; сохранение масок контроллеров прерываний
 ; !!! описать
     in al, 21h
@@ -419,7 +413,17 @@ begin:
     mov al, 0FFh
     out 0A1h, al 
 
-; загрузка псевдодескриптора в IDTR
+; запрет прерываний
+    cli
+    mov al, 80h
+    out 70h, al
+
+; подготовка превдодескриптора загрузка псевдодескриптора в IDTR
+    mov ax, data32
+    shl eax, 4
+    add eax, offset idt
+    mov dword ptr ipsdescr + 2, eax 
+    mov word ptr  ipsdescr, idt_size-1 
     lidt fword ptr ipsdescr
 
 ; открытие линии А20
@@ -442,17 +446,15 @@ begin:
 ; возращение в реальный режим
 ; !!! поменять комменты
 real:
-    ; обновляем все сегментные регистры
+; обновление сегментных регистров
     mov ax, data32   
     mov ds, ax
-    mov ax, code32
-    mov es, ax
     mov ax, stack32   
     mov ss, ax
     mov ax, stack_size
     mov sp, ax
 
-; возвращаем базовый вектор контроллера прерываний
+; восстановление базового вектора контроллера прерываний
     mov al, 11h
     out 20h, al
     mov al, 8
@@ -462,21 +464,22 @@ real:
     mov al, 1
     out 21h, al
 
-; восстанавливаем маски контроллеров прерываний
+; восстанавление масок контроллеров прерываний
     mov al, master
     out 21h, al
     mov al, slave
     out 0A1h, al
 
-; восстанавливаем IDTR прерываний (на 1ый кб)
+; восстанавление IDTR
     lidt fword ptr ipsdescr16
 
-    sti      ; Резрешаем (аппаратные) прерывания 
+; разрешение прерываний
+    sti
 	xor al, al
 	out 70h, al
 	
 ; работа в реальном режиме
-    ;clear screen
+; очистка экрана
     mov ax, 3
     int 10h
 
