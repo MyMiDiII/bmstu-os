@@ -193,6 +193,7 @@ code32 segment para public 'CODE' use32
         jb print
         cmp dl, 'z'
         ja print
+        sub dl, 32
 
     print:
         mov ebx, syml_pos
