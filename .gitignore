@@ -8,3 +8,9 @@
 *.toc
 *report.pdf
 *title.pdf
+
+# FILES
+*.exe
+*.EXE
+*.obj
+*.OBJ
