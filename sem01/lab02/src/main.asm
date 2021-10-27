@@ -29,7 +29,6 @@ stack32 ends
 
 data32 segment para 'DATA'
 ; таблица глобальных дескрипторов GDT
-; !!! 8F E 92 98 40 ???
     gdt_null    descr <>
     gdt_4gb     descr <0FFFFh,0,0,92h,0CFh,0>
     gdt_code32  descr <code32_size-1,0,0,98h,40h,0>
@@ -48,14 +47,13 @@ data32 segment para 'DATA'
     stack32s = 32
     videos   = 40 
 
-; !!! 8F E 92 98 40 ???
 ; таблица дескрипторов прерываний
     idt label byte
     idescr0_12      idescr 13 dup (<dummy,code32s,0,8Fh,0>)
     idescr13        idescr <except13,code32s,0,8Fh,0>
     idescr14_31     idescr 18 dup (<dummy,code32s,0,8Fh,0>)
-    idescr_time     idescr <int8h,code32s,0,0Eh,0>
-    idescr_keyboard idescr <int9h,code32s,0,0Eh,0>
+    idescr_time     idescr <int8h,code32s,0,8Eh,0>
+    idescr_keyboard idescr <int9h,code32s,0,8Eh,0>
     idt_size = $ - idt
 
 ; псевдодескриптор таблицы прерываний (6 байт) 
@@ -75,7 +73,7 @@ data32 segment para 'DATA'
 ; переменные для обработчика прерывания от клавиатуры
     ascii    db 0,0,'1','2','3','4','5','6','7','8','9','0','-','=',0,0
                 db 'q','w','e','r','t','y','u','i','o','p','[',']',0,0
-                db 'a','s','d','f','g','h','j','k','l',';','"',0
+                db 'a','s','d','f','g','h','j','k','l',';','"','`',0
                 db '\\','z','x','c','v','b','n','m',',','.','/',0,0,0,' ',0, 0
                 db 0,0,0,0,0,0,0,0,0,0,0,0
 
@@ -129,7 +127,6 @@ code32 segment para public 'CODE' use32
 
     same:
         inc cnt
-; !!!  ???
 ; EOI
         mov	al, 20h 
         out	20h, al
@@ -169,8 +166,8 @@ code32 segment para public 'CODE' use32
         mov syml_pos, ebx
         jmp allow_handle_keyboard
 
-    check_up:
 ; cравнение с кодом capslock
+    check_up:
         cmp al, 3Ah
         jne choose_value
 
@@ -204,11 +201,11 @@ code32 segment para public 'CODE' use32
         mov syml_pos, ebx
 
     allow_handle_keyboard:
-; !!! ???
-        in	al, 61h
-        or	al, 80h
+; сообщение контроллеру о приеме скан-кода символа
+        in	al, 61h ; получение содержимое порта B
+        or	al, 80h ; установка старшего бита
         out	61h, al
-        and al, 7Fh
+        and al, 7Fh ; сброс старшего бита
         out	61h, al
 
         mov	al, 20h
@@ -245,7 +242,7 @@ code32 segment para public 'CODE' use32
         loop iterate_through_memory
 
     print_memory_counter:
-        ; перевод в МБ
+; перевод в МБ
         mov eax, ebx
         xor edx, edx
 
@@ -388,21 +385,19 @@ begin:
     lgdt fword ptr psdescr
 
 ; сохранение масок контроллеров прерываний
-; !!! описать
     in al, 21h
     mov master, al
     in al, 0A1h
     mov slave, al
 
 ; перепрограммирование ведущего контроллера
-; !!! переписать комменты
-    mov al, 11h  ; СКИ1 - два контроллера в компьютере -> Будет СКИ3
+    mov al, 11h  ; СКИ1 (слово команд инициализации)
     out 20h, al                     
     mov al, 32   ; СКИ2 - базовый вектор 32 (был 8)
     out 21h, al                     
     mov al, 4    ; СКИ3 - ведомый подключен в уровню2 ведущего
     out 21h, al
-    mov al, 1    ; СКИ4 - 8086, требуется EOI требуется
+    mov al, 1    ; СКИ4 - требуется EOI
     out 21h, al
 
 ; маска для ведущего контроллера (разрешаем прерывания от таймера и клавиатуры)
@@ -444,7 +439,6 @@ begin:
     dw code32s
 
 ; возращение в реальный режим
-; !!! поменять комменты
 real:
 ; обновление сегментных регистров
     mov ax, data32   
