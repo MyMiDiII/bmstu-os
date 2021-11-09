@@ -20,7 +20,7 @@ int main(void)
     else if (!first_child_id)
     {
         sleep(SLEEP_TIME);
-        printf("\nFIRST CHILD: pid %d, ppid: %d, pgrp: %d\n",
+        printf("\nFIRST CHILD: pid %d, ppid %d, pgrp %d\n",
                getpid(), getppid(), getpgrp());
         return OK;
     }
@@ -33,12 +33,12 @@ int main(void)
     else if (!second_child_id)
     {
         sleep(SLEEP_TIME);
-        printf("\nSECOND CHILD: pid %d, ppid: %d, pgrp: %d\n",
+        printf("\nSECOND CHILD: pid %d, ppid %d, pgrp %d\n",
                getpid(), getppid(), getpgrp());
         return OK;
     }
 
-    printf("PARENT: pid: %d, pgrp: %d, child1: %d, child2: %d\n",
+    printf("PARENT: pid %d, pgrp %d, child1 %d, child2 %d\n",
            getpid(), getpgrp(), first_child_id, second_child_id);
 
     return OK;
