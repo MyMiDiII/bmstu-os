@@ -7,8 +7,6 @@
 #define OK 0
 #define ERROR 1
 
-#define SLEEP_TIME 1
-
 
 void check_status(const int status)
 {
