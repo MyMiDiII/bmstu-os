@@ -4,12 +4,6 @@
 
 #include <stdio.h>
 
-// !!!!!!!!!!!!!!!
-
-#include <signal.h>
-
-// !!!!!!!!!!!!!!!
-
 #define OK 0
 #define ERROR 1
 
@@ -49,7 +43,6 @@ int main(void)
         sleep(SLEEP_TIME);
         printf("FIRST CHILD: pid %d, ppid: %d, pgrp: %d\n",
                getpid(), getppid(), getpgrp());
-        kill(getpid(), SIGKILL);
         return OK;
     }
 
