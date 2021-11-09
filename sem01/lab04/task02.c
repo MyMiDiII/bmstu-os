@@ -7,7 +7,6 @@
 // !!!!!!!!!!!!!!!
 
 #include <signal.h>
-#include <sys/ptrace.h>
 
 // !!!!!!!!!!!!!!!
 
@@ -47,11 +46,10 @@ int main(void)
     }
     else if (!first_child_id)
     {
-        ptrace(PTRACE_TRACEME, 0, 0, 0);
         sleep(SLEEP_TIME);
         printf("FIRST CHILD: pid %d, ppid: %d, pgrp: %d\n",
                getpid(), getppid(), getpgrp());
-        kill(getpid(), SIGSTOP);
+        kill(getpid(), SIGKILL);
         return OK;
     }
 
