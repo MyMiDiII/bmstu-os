@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "menu.h"
 #include "graph.h"
 
 #define OK 0

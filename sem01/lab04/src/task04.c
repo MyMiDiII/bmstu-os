@@ -93,7 +93,7 @@ int main(void)
 
     close(fd[1]);
 
-    read(fd[0], buf, BUF_SIZE);
+    read(fd[0], buf, sizeof(buf));
     printf("\nReceived messages:\n%s\n", buf);
 
     return OK;
