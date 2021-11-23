@@ -6,7 +6,8 @@
 
 #define OK 0
 #define ERROR 1
-
+#define FORK_ERR -1
+#define EXEC_ERR -1
 
 void check_status(const int status)
 {
@@ -26,22 +27,24 @@ void check_status(const int status)
     }
 }
 
-
 int main(void)
 {
-    pid_t first_child_id, second_child_id;
+    pid_t first_child_id, second_child_id, child_pid;
+    int status;
 
-    if ((first_child_id = fork()) == -1)
+    if ((first_child_id = fork()) == FORK_ERR)
     {
         perror("Can't fork!\n");
         return ERROR;
     }
-    else if (!first_child_id)
+    
+    if (first_child_id == 0)
     {
         printf("FIRST CHILD: pid %d, ppid %d, pgrp %d\n",
                getpid(), getppid(), getpgrp());
 
-        if (execlp("factor", "factor", "273", 0) == -1)
+        if (execl("./levenstein.out", "./levenstein.out",
+                  "./data/test1.txt", 0) == EXEC_ERR)
         {
             printf("Can't exec!\n");
             return ERROR;
@@ -50,17 +53,19 @@ int main(void)
         return OK;
     }
 
-    if ((second_child_id = fork()) == -1)
+    if ((second_child_id = fork()) == FORK_ERR)
     {
         perror("Can't fork!\n");
         return ERROR;
     }
-    else if (!second_child_id)
+    
+    if (second_child_id == 0)
     {
         printf("SECOND CHILD: pid %d, ppid %d, pgrp %d\n",
                getpid(), getppid(), getpgrp());
 
-        if (execlp("pwd", "pwd", 0) == -1)
+        if (execl("./graph.out", "./graph.out",
+                  "./data/test2.txt", 0) == EXEC_ERR)
         {
             printf("Can't exec!\n");
             return ERROR;
@@ -71,9 +76,6 @@ int main(void)
 
     printf("PARENT: pid %d, pgrp %d, child1 %d, child2 %d\n\n",
            getpid(), getpgrp(), first_child_id, second_child_id);
-
-    int status;
-    pid_t child_pid;
 
     child_pid = wait(&status);
     printf("\nChild with pid = %d has finished\n", child_pid);

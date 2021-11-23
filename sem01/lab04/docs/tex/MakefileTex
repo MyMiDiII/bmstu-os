@@ -1,0 +1,18 @@
+.PHONY : build move
+
+texReport : build move
+
+build : report.tex
+	pdflatex -shell-escape report.tex
+	pdflatex -shell-escape report.tex
+	pdflatex -shell-escape report.tex
+
+move : report.pdf
+	-mkdir ../pdf           
+	mv report.pdf ../pdf/ 
+	-mkdir ../out        
+	-mv *.aux *.log *.bbl *.blg *.dvi *.out *.toc ../out/ 
+
+clear :
+	-rm -rf ../out/ ../pdf/
+	-rm *.aux *.log *.bbl *.blg *.dvi *.out *.pdf

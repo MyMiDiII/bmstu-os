@@ -5,21 +5,21 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define OK 0
 #define ERROR 1
+#define FORK_ERR -1
+#define PIPE_ERR -1
 
 #define WAIT_SIGNAL_TIME 5
 
-#define TEXT1 "Message 1"
-#define TEXT2 "Hello from child!"
+#define TEXT1 "message 1\n"
+#define TEXT2 "Maslova Marina IU7-53B\n"
 
-#define BUF_SIZE 32
+#define BUF_SIZE 64
 
-#define NOT_WRITE 0
-#define WRITE 1
-
-int mode = NOT_WRITE;
+_Bool flag = false;
 
 void check_status(const int status)
 {
@@ -39,64 +39,59 @@ void check_status(const int status)
     }
 }
 
-
 void switch_mode(int signal)
 {
-    mode = WRITE;
+    flag = true;
 }
-
 
 int main(void)
 {
-    pid_t first_child_id, second_child_id;
-
+    pid_t first_child_id, second_child_id, child_pid;
+    int status;
     int fd[2];
+    char buf[BUF_SIZE] = "\0";
 
-    if (pipe(fd) == -1)
+    if (pipe(fd) == PIPE_ERR)
     {
         printf("Can't pipe!\n");
         return ERROR;
     }
 
-    if ((first_child_id = fork()) == -1)
+    signal(SIGINT, switch_mode);
+
+    if ((first_child_id = fork()) == FORK_ERR)
     {
         perror("Can't fork!\n");
         return ERROR;
     }
-    else if (!first_child_id)
+    
+    if (first_child_id == 0)
     {
-        signal(SIGINT, switch_mode);
-        printf("FIRST CHILD: pid %d, ppid %d, pgrp %d\n",
-               getpid(), getppid(), getpgrp());
-
         sleep(WAIT_SIGNAL_TIME);
 
-        if (mode)
+        if (flag)
         {
             close(fd[0]);
-            write(fd[1], TEXT1, strlen(TEXT1) + 1);
+            write(fd[1], TEXT1, strlen(TEXT1));
         }
 
         return OK;
     }
 
-    if ((second_child_id = fork()) == -1)
+    if ((second_child_id = fork()) == FORK_ERR)
     {
         perror("Can't fork!\n");
         return ERROR;
     }
-    else if (!second_child_id)
+    
+    if (second_child_id == 0)
     {
-        signal(SIGINT, switch_mode);
-        printf("SECOND CHILD: pid %d, ppid %d, pgrp %d\n",
-               getpid(), getppid(), getpgrp());
-
         sleep(WAIT_SIGNAL_TIME);
 
-        if (mode)
+        if (flag)
         {
             close(fd[0]);
-            write(fd[1], TEXT2, strlen(TEXT2) + 1);
+            write(fd[1], TEXT2, strlen(TEXT2));
         }
 
         return OK;
@@ -104,30 +99,20 @@ int main(void)
 
     printf("PARENT: pid %d, pgrp %d, child1 %d, child2 %d\n\n",
            getpid(), getpgrp(), first_child_id, second_child_id);
+    printf("Press \"Ctrl+C\" to send messages\n");
 
-    signal(SIGINT, 1);
+    child_pid = wait(&status);
+    printf("\nChild with pid = %d has finished\n", child_pid);
+    check_status(status);
 
-    char buf1[BUF_SIZE] = "\0";
-    char buf2[BUF_SIZE] = "\0";
+    child_pid = wait(&status);
+    printf("\nChild with pid = %d has finished\n", child_pid);
+    check_status(status);
 
     close(fd[1]);
 
-    read(fd[0], buf1, BUF_SIZE);
-    printf("\nText1: %s\n", buf1);
-
-    read(fd[0], buf2, BUF_SIZE);
-    printf("Text2: %s\n", strlen(buf2) ? buf2 : buf1 + strlen(buf1) + 1);
-
-    int status;
-    pid_t child_pid;
-
-    child_pid = wait(&status);
-    printf("\nChild with pid = %d has finished\n", child_pid);
-    check_status(status);
-
-    child_pid = wait(&status);
-    printf("\nChild with pid = %d has finished\n", child_pid);
-    check_status(status);
+    read(fd[0], buf, BUF_SIZE);
+    printf("\nReceived messages:\n%s\n", buf);
 
     return OK;
 }
