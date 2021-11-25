@@ -1,0 +1,87 @@
+% russian language
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+% searchable and copyable
+\usepackage{cmap}
+
+% Times New Roman
+\usepackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+
+% Margins
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=10mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+% Titles
+\usepackage{titlesec}
+\titlespacing*{\chapter}{\parindent}{-30pt}{21pt}
+\titlespacing*{\section}{\parindent}{*2}{*2}
+\titlespacing*{\subsection}{\parindent}{*2}{*2}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{18pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{16pt}{\Large\bfseries}
+
+% Spacing
+\usepackage{setspace}
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\linespread{1.25}
+
+% Links
+\usepackage[unicode, pdftex]{hyperref}
+\usepackage[nottoc]{tocbibind} % for bib link
+
+% Listings
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+\usepackage{verbatim}
+
+% Images
+\usepackage{graphicx}
+\newcommand{\scheme}[4] {
+	\begin{figure}[ht!]
+		\center{
+            \includegraphics[height=#1]{../data/schemes/#2}
+            \caption{#3}
+            \label{scheme:#4}
+        }
+	\end{figure}
+}
+
+\newcommand{\img}[4] {
+	\begin{figure}[ht!]
+		\center{
+            \includegraphics[height=#1]{../data/img/#2}
+            \caption{#3}
+            \label{img:#4}
+        }
+	\end{figure}
+}
+
+% Captions
+\usepackage[figurename=Рисунок,labelsep=endash,
+            justification=centering]{caption}
+\usepackage{hyphenat}
+
+% Lists
+\usepackage{enumitem}
+\renewcommand{\labelitemi}{$-$}
+\setlist{nosep, leftmargin=\parindent, wide}
+
+% Comments
+\usepackage{comment}
+
+% Text
+\usepackage{amstext}
+\usepackage{ulem}
+\renewcommand{\ULdepth}{1.5pt}
+
+% Formulas
+\usepackage{amsmath}
+
+% Tabulars
+\usepackage{csvsimple}
