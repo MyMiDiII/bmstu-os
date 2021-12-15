@@ -29,7 +29,7 @@ void run_producer(buffer_t* const buf, const int sid, const int pdid)
 	}
 
     // critical section
-	const char symb = ALPHABET[buf->write_pos];
+	const char symb = buf->write_pos + 'a';
 
     if (write_buffer(buf, symb) == -1) 
     {

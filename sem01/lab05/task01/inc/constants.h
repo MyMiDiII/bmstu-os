@@ -6,8 +6,6 @@
 #include <sys/sem.h>
 #include <sys/stat.h>
 
-#define ALPHABET "abcdefghijklmnopqrstuvwxyz"
-
 #define CONSUMER_DELAY_TIME 4
 #define PRODUCER_DELAY_TIME 2
 
