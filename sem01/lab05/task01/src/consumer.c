@@ -28,7 +28,6 @@ void run_consumer(buffer_t* const buf, const int sid, const int cid)
 		exit(-1);
 	}
 
-	// critical section
     char ch;
     if (read_buffer(buf, &ch) == -1) 
 	{
@@ -37,7 +36,6 @@ void run_consumer(buffer_t* const buf, const int sid, const int cid)
     }
     printf("\e[1;34mConsumer #%d  read: %c (sleep: %d)\e[0m\n", cid,
             ch, sleep_time);
-    // critical section ends
 
 	if (semop(sid, consumer_release, 2) == -1)
 	{

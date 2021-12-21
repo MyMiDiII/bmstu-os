@@ -28,7 +28,6 @@ void run_producer(buffer_t* const buf, const int sid, const int pdid)
 		exit(-1);
 	}
 
-    // critical section
 	const char symb = buf->write_pos + 'a';
 
     if (write_buffer(buf, symb) == -1) 
@@ -39,7 +38,6 @@ void run_producer(buffer_t* const buf, const int sid, const int pdid)
 
     printf("\e[1;35mProducer #%d write: %c (sleep: %d)\e[0m\n", pdid, symb,
             sleep_time);
-    // critical section ends
 
 	if (semop(sid, producer_release, 2) == -1)
 	{
