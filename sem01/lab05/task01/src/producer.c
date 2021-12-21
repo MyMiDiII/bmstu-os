@@ -13,8 +13,8 @@ struct sembuf producer_lock[2] =
 
 struct sembuf producer_release[2] = 
 {
-	{BUF_FULL, 1, 0},
-	{BIN_SEM, 1, 0}
+	{BIN_SEM, 1, 0},
+	{BUF_FULL, 1, 0}
 };
 
 void run_producer(buffer_t* const buf, const int sid, const int pdid)

@@ -13,8 +13,8 @@ struct sembuf consumer_lock[2] =
 
 struct sembuf consumer_release[2] = 
 {
-	{BUF_EMPTY, 1, 0},
-	{BIN_SEM, 1, 0}
+	{BIN_SEM, 1, 0},
+	{BUF_EMPTY, 1, 0}
 };
 
 void run_consumer(buffer_t* const buf, const int sid, const int cid)
