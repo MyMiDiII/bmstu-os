@@ -13,7 +13,7 @@ int main(void)
 {
     signal(SIGINT, SIG_IGN);
 	int perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-    int shmid = shmget(IPC_PRIVATE, sizeof(int), perms);
+    int shmid = shmget(IPC_PRIVATE, 2 * sizeof(int), perms);
 	if (shmid == -1)
 	{
 		perror("Failed to create shared memory!");
@@ -28,6 +28,8 @@ int main(void)
 	}
     *counter = 0;
 
+    int *active_readers = counter + 1;
+
     int sem_descr = semget(IPC_PRIVATE, 3, IPC_CREAT | perms);
 	if (sem_descr == -1)
 	{
@@ -35,7 +37,7 @@ int main(void)
 		return -1;
 	}
 
-	if (semctl(sem_descr, ACTIVE_READERS, SETVAL, 0) == -1)
+	if (semctl(sem_descr, ACTIVE_READERS, SETVAL, 1) == -1)
 	{
 		perror("Can't set control semaphors!");
 		return -1;
@@ -57,7 +59,7 @@ int main(void)
 		create_writer(counter, sem_descr, i + 1);
 
     for (int i = 0; i < READERS_NUM; i++)
-		create_reader(counter, sem_descr, i + 1);
+		create_reader(counter, active_readers, sem_descr, i + 1);
 
 	for (int i = 0; i < READERS_NUM + WRITERS_NUM; i++)
     {
