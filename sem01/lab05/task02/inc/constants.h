@@ -4,13 +4,12 @@
 #define WRITERS_NUM 3
 #define READERS_NUM 5
 
-#define READER_SLEEP_TIME 2
-#define WRITER_SLEEP_TIME 2
+#define READER_SLEEP_TIME 3
+#define WRITER_SLEEP_TIME 3
 
-#define ACTIVE_READERS  0
-#define CAN_READ        1
-#define CAN_WRITE       2
-#define WAIT_WRITERS    3
+#define ACTIVE_READERS 0
+#define ACTIVE_WRITERS 1
+#define ACCESS 2
 
 #define ITERS_NUM 7
 

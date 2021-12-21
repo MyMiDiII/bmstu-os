@@ -44,6 +44,9 @@ include $(DEPS)
 func : release
 	func_tests/testing.sh
 
+run : app
+	@stty -echoctl && ./app
+
 clean :
 	rm -f *.exe
 	rm -fr $(OUTDIR)

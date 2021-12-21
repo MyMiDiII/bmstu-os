@@ -4,13 +4,14 @@
 #include <sys/sem.h>
 #include <sys/stat.h>
 #include <sys/shm.h>
+#include <signal.h>
 
 #include "constants.h"
-#include "writer.h"
-#include "reader.h"
+#include "rw.h"
 
 int main(void)
 {
+    signal(SIGINT, SIG_IGN);
 	int perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
     int shmid = shmget(IPC_PRIVATE, sizeof(int), perms);
 	if (shmid == -1)
@@ -26,23 +27,11 @@ int main(void)
 		return -1;
 	}
     *counter = 0;
-    
-    int sem_descr = semget(IPC_PRIVATE, 4, IPC_CREAT | perms);
+
+    int sem_descr = semget(IPC_PRIVATE, 3, IPC_CREAT | perms);
 	if (sem_descr == -1)
 	{
 		perror("Failed to create semaphores!");
-		return -1;
-	}
-
-    if (semctl(sem_descr, CAN_WRITE, SETVAL, 0) == -1)
-	{
-		perror("Can't set control semaphors!");
-		return -1;
-	}
-
-	if (semctl(sem_descr, CAN_READ, SETVAL, 0) == -1)
-	{
-		perror("Can't set control semaphors!");
 		return -1;
 	}
 
@@ -52,9 +41,15 @@ int main(void)
 		return -1;
 	}
 
-    if (semctl(sem_descr, WAIT_WRITERS, SETVAL, 0) == -1)
+	if (semctl(sem_descr, ACTIVE_WRITERS, SETVAL, 0) == -1)
 	{
-		perror("Can't set control semaphors.");
+		perror("Can't set control semaphors!");
+		return -1;
+	}
+
+	if (semctl(sem_descr, ACCESS, SETVAL, 1) == -1)
+	{
+		perror("Can't set control semaphors!");
 		return -1;
 	}
 
@@ -77,7 +72,7 @@ int main(void)
             printf("One of children terminated abnormally!");
     }
 
-        printf("\e[1;32mOK\e[0m\n");
+    printf("\e[1;32mOK\e[0m\n");
 
 	if (shmctl(shmid, IPC_RMID, NULL) == -1)
 	{
