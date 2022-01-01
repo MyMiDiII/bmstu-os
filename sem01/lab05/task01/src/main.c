@@ -17,7 +17,8 @@ int main(void)
 	setbuf(stdout, NULL);
 
 	int perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-    int shmid = shmget(IPC_PRIVATE, sizeof(buffer_t), IPC_CREAT | perms);
+    int shmid = shmget(IPC_PRIVATE, sizeof(buffer_t) + sizeof(char),
+                IPC_CREAT | perms);
     if (shmid == -1) 
 	{
         perror("Failed to create shared memory!");
@@ -30,6 +31,9 @@ int main(void)
         perror("Shmat failed!");
         return -1;
     }
+
+    char *ch = (char *)(buffer + 1);
+    *ch = 'a' - 1;
 
     if (init_buffer(buffer) == -1) 
 	{
@@ -63,7 +67,7 @@ int main(void)
 	}
 
     for (int i = 0; i < PRODUCER_NUM; i++)
-		create_producer(buffer, sem_descr, i + 1);
+		create_producer(buffer, ch, sem_descr, i + 1);
 
 	for (int i = 0; i < CONSUMER_NUM; i++)
 		create_consumer(buffer, sem_descr, i + 1);

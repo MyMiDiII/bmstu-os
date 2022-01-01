@@ -16,7 +16,7 @@ void switch_mode(int signal)
     flag = false;
 }
 
-struct sembuf writer_begin[] = 
+struct sembuf writer_begin[6] = 
 {
     {WAITING_WRITERS, 1, 0},
     {ACTIVE_READERS, 0, 0},
@@ -26,22 +26,20 @@ struct sembuf writer_begin[] =
     {WAITING_WRITERS, -1, 0}
 };
 
-struct sembuf writer_release[] =
+struct sembuf writer_release[2] =
 {
     {ACTIVE_WRITERS, -1, 0},
 	{ACCESS, 1, 0}
 };
 
-struct sembuf reader_begin[] = 
+struct sembuf reader_begin[3] = 
 {
-    {WAITING_READERS, 1, 0},
     {ACTIVE_WRITERS, 0, 0},
     {WAITING_WRITERS, 0, 0},
     {ACTIVE_READERS, 1, 0},
-    {WAITING_READERS, -1, 0}
 };
 
-struct sembuf reader_release[] = 
+struct sembuf reader_release[1] = 
 {
     {ACTIVE_READERS, -1, 0}
 };
@@ -58,7 +56,7 @@ int stop_write(int sem_id)
 
 int start_read(int sid) 
 {
-    return semop(sid, reader_begin, 5);
+    return semop(sid, reader_begin, 3);
 }
 
 int stop_read(int sid) 

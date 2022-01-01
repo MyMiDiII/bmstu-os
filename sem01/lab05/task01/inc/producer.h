@@ -7,7 +7,7 @@
 #include "constants.h"
 #include "buffer.h"
 
-void run_producer(buffer_t* const buf, const int sid, const int pdid);
-void create_producer(buffer_t* const buf, const int sid, const int pdid);
+void create_producer(buffer_t* const buf, char *const ch,
+                     const int sid, const int pdid);
 
 #endif

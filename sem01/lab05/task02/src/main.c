@@ -28,7 +28,7 @@ int main(void)
 	}
     *counter = 0;
 
-    int sem_descr = semget(IPC_PRIVATE, 5, IPC_CREAT | perms);
+    int sem_descr = semget(IPC_PRIVATE, 4, IPC_CREAT | perms);
 	if (sem_descr == -1)
 	{
 		perror("Failed to create semaphores!");
@@ -42,12 +42,6 @@ int main(void)
 	}
 
 	if (semctl(sem_descr, ACTIVE_WRITERS, SETVAL, 0) == -1)
-	{
-		perror("Can't set control semaphors!");
-		return -1;
-	}
-
-	if (semctl(sem_descr, WAITING_READERS, SETVAL, 0) == -1)
 	{
 		perror("Can't set control semaphors!");
 		return -1;
@@ -106,3 +100,4 @@ int main(void)
 
 	return 0;
 }
+
