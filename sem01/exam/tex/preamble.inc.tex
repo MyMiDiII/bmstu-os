@@ -1,0 +1,153 @@
+% russian language
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+% searchable and copyable
+\usepackage{cmap}
+
+% Times New Roman
+\usepackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+
+% Margins
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=10mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+% Titles
+\usepackage{titlesec}
+\titlespacing*{\chapter}{\parindent}{-30pt}{21pt}
+\titlespacing*{\section}{\parindent}{*2}{*2}
+\titlespacing*{\subsection}{\parindent}{*2}{*2}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{18pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{16pt}{\Large\bfseries}
+
+% Spacing
+\usepackage{setspace}
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\linespread{1.25}
+
+% Links
+\usepackage[unicode, pdftex]{hyperref}
+\def\UrlBreaks{\do\/\do-\do\_}
+\usepackage[nottoc]{tocbibind} % for bib link
+
+% Listings
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+\usepackage{verbatim}
+\usepackage[framemethod=tikz]{mdframed}
+
+\mdfdefinestyle{mymdstyle}{
+    innerleftmargin=0mm,
+    innerrightmargin=0mm,
+    innertopmargin=-4pt,
+    innerbottommargin=-9pt,
+    splittopskip=\baselineskip,
+    hidealllines=true,
+    middleextra={
+      \node[anchor=west] at (O|-P)
+        {\lstlistingname~\thelstlisting~(продолжение)};
+        },
+    secondextra={
+      \node[anchor=west] at (O|-P)
+        {\lstlistingname~\thelstlisting~(продолжение)};},
+}
+
+\surroundwithmdframed[style=mymdstyle]{lstlisting}
+\newmdenv[style=mymdstyle]{mdlisting}
+
+\newcommand{\mylisting}[4] {
+    \noindent
+    \begin{minipage}{\linewidth}
+        \captionsetup{justification=raggedright,singlelinecheck=off}
+        \begin{lstinputlisting}[
+            caption={#1},
+            label={lst:#2},
+            linerange={#3}
+        ]{../../src/#4}
+        \end{lstinputlisting}
+    \end{minipage}
+}
+
+\newcommand{\mybreaklisting}[4]{
+    \begin{mdlisting}
+        \captionsetup{justification=raggedright,singlelinecheck=off}
+        \lstinputlisting[label=lst:#2, caption=#1,
+        linerange=#3]{../../src/#4}
+    \end{mdlisting}
+}
+
+% Images
+\usepackage{graphicx}
+\newcommand{\scheme}[4] {
+	\begin{figure}[ht!]
+		\center{
+            \includegraphics[width=#1]{../data/schemes/#2}
+            \caption{#3}
+            \label{scheme:#4}
+        }
+	\end{figure}
+}
+
+\newcommand{\img}[4] {
+	\begin{figure}[ht!]
+		\center{
+            \includegraphics[height=#1]{../data/img/#2}
+            \caption{#3}
+            \label{img:#4}
+        }
+	\end{figure}
+}
+
+% Captions
+\usepackage[figurename=Рисунок,labelsep=endash,
+            justification=centering]{caption}
+\usepackage{hyphenat}
+
+% Lists
+\usepackage{enumitem}
+\renewcommand{\labelitemi}{$-$}
+\setlist{nosep, leftmargin=\parindent, wide}
+
+% Comments
+\usepackage{comment}
+
+% Text
+\usepackage{amstext}
+\usepackage{ulem}
+\renewcommand{\ULdepth}{1.5pt}
+
+% Formulas
+\usepackage{amsmath}
+
+% Tabulars
+\usepackage{threeparttable}
+\usepackage{csvsimple}
+\usepackage{longtable,ltcaption,booktabs}
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\newcommand{\csvtable}[3]{
+    \begin{table}[h]
+        \begin{center}
+        \begin{threeparttable}
+            \captionsetup{format=hang,justification=raggedright,
+                          singlelinecheck=off}
+            \caption{\label{tab:#1}#2}
+            \begin{tabular}{|r|r|r|r|}
+                \hline
+                \bfseries $\alpha$ & \bfseries $p$ &
+                \bfseries Число итераций & \bfseries Ошибка 
+                \csvreader{../data/csv/#3.csv}{}
+                {\\\hline \csvcoli&\csvcolii&\csvcoliii&\csvcoliv}
+                \\\hline
+            \end{tabular}
+        \end{threeparttable}
+        \end{center}
+    \end{table} 
+}
