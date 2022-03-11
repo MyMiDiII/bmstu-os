@@ -1,35 +1,35 @@
 #include <stdio.h>
+#include <unistd.h>
 
 #include "stack.h"
 
+int dopath(char *filename)
+{
+    printf("%s\n", filename);
+    return 0;
+}
+
+
 int myftw(char *pathname)
 {
-    node_t *mystack = NULL;
-    char name[MAX_FILE_NAME] = "holoso";
-    char *dinname = name;
+    if (chdir(pathname) == -1)
+    {
+        puts("Ошибка при изменении текущего рабочего каталога!");
 
-    if (pop(&mystack, &dinname))
-        puts("all is ok, stack is empty");
+        return -1;
+    }
 
-    push(&mystack, "hello");
-    push(&mystack, "");
-    push(&mystack, "what did you say?");
-    pop(&mystack, &dinname);
-    printf("%s\n", name);
+    char name[MAX_FILE_NAME];
+    char *buf= name;
 
-    pop(&mystack, &dinname);
-    printf("%s\n", name);
+    node_t *stack = NULL;
+    push(&stack, pathname);
 
-    pop(&mystack, &dinname);
-    printf("%s\n", name);
-
-    pop(&mystack, &dinname);
-    printf("%s\n", name);
-
-    if (pop(&mystack, &dinname))
-        puts("all is ok, stack is empty");
-
-    puts("Та-дам! Дерево каталогов!");
+    while (!is_empty(&stack))
+    {
+        pop(&stack, &buf);
+        dopath(buf);
+    }
     
     return 0;
 }

@@ -18,8 +18,6 @@ node_t *create_node(char *name)
         return NULL;
 
     node->name = malloc(sizeof(char) * strlen(name));
-    printf("%ld\n", strlen(name));
-
     strcpy(node->name, name);
     node->prev = NULL;
 
