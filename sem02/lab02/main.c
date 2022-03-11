@@ -1,10 +1,12 @@
 #include <stdio.h>
 
+#include "myftw.h"
+
 int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        puts("Использование: ./MYFTW <начальный_каталог");
+        puts("Использование: ./MYFTW <начальный_каталог>");
         return -1;
     }
 
