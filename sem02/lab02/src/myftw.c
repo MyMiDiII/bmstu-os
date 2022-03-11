@@ -10,16 +10,17 @@
 void print_tree_part(char *filename, int depth)
 {
     for (int i = 0; i < depth; ++i )
-        printf("└───");
+        printf(i != depth - 1  ? "    "   : "└───");
 
     printf("%s\n", filename);
 }
 
 
-int dopath(char *filename, node_t **stack)
+int dopath(char *filename, int *depth, node_t **stack)
 {
     if (strcmp(filename, "..") == 0)
     {
+        (*depth)--;
         chdir(filename);
         return 0;
     }
@@ -34,13 +35,13 @@ int dopath(char *filename, node_t **stack)
 
     if (!S_ISDIR(statBuf.st_mode))
     {
-        printf("FILE: ");
-        print_tree_part(filename, 0);
+        //printf("FILE: ");
+        print_tree_part(filename, *depth);
         return 0;
     }
 
-    printf("DIR: ");
-    print_tree_part(filename, 0);
+    //printf("DIR: ");
+    print_tree_part(filename, *depth);
 
     DIR *dp;
 
@@ -57,6 +58,7 @@ int dopath(char *filename, node_t **stack)
         return -1;
     }
 
+    (*depth)++;
     struct dirent *dirp;
 
     push(stack, "..");
@@ -90,13 +92,14 @@ int myftw(char *pathname)
     char *buf= name;
 
     int error = 0;
+    int depth = 0;
     node_t *stack = NULL;
     push(&stack, pathname);
 
     while (!is_empty(&stack) && !error)
     {
         pop(&stack, &buf);
-        error = dopath(buf, &stack);
+        error = dopath(buf, &depth, &stack);
     }
     
     return 0;
