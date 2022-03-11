@@ -10,5 +10,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    puts("");
     return myftw(argv[1]);
 }

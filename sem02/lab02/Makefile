@@ -7,7 +7,7 @@ vpath %.c $(SRCDIR) $(UNITDIR)
 
 CC := gcc
 PATHFLAG := -I$(INCDIR)
-CFLAGS := -std=c99 $(PATHFLAG) -Wall -Werror -Wpedantic
+CFLAGS := $(PATHFLAG) -Wall
 OBGSFLAGS := -lcheck -lpthread -lrt
 
 SRCS := main.c $(wildcard $(SRCDIR)*.c)

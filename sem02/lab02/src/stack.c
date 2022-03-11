@@ -50,7 +50,11 @@ int pop(node_t **stack, char **name)
     *stack = (*stack)->prev;
 
     strcpy(*name, elem->name);
+    //printf("%s\n", elem->name);
+    //puts("free name");
     free(elem->name);
+    //puts("free elem");
+    //printf("%p\n", elem);
     free(elem);
 
     return 0;
