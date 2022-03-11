@@ -9,9 +9,8 @@
 
 void print_tree_part(char *filename, int depth)
 {
-    //
     for (int i = 0; i < depth; ++i )
-        printf(i != depth - 1  ? "    "   : "└───");
+        printf(i != depth - 1  ? "│   "   : "└───");
 
     printf("%s\n", filename);
 }
