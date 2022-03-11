@@ -9,6 +9,7 @@
 
 void print_tree_part(char *filename, int depth)
 {
+    //
     for (int i = 0; i < depth; ++i )
         printf(i != depth - 1  ? "    "   : "└───");
 
@@ -18,7 +19,7 @@ void print_tree_part(char *filename, int depth)
 
 int dopath(char *filename, int *depth, node_t **stack)
 {
-    if (strcmp(filename, "..") == 0)
+    if ((strcmp(filename, "..") == 0) && *depth)
     {
         (*depth)--;
         chdir(filename);
@@ -35,12 +36,10 @@ int dopath(char *filename, int *depth, node_t **stack)
 
     if (!S_ISDIR(statBuf.st_mode))
     {
-        //printf("FILE: ");
         print_tree_part(filename, *depth);
         return 0;
     }
 
-    //printf("DIR: ");
     print_tree_part(filename, *depth);
 
     DIR *dp;
