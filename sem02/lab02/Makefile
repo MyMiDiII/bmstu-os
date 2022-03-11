@@ -17,6 +17,7 @@ OBGS := $(patsubst $(SRCDIR)%.c,$(OUTDIR)%.o,$(SRCS))
 
 debug : CFLAGS += -DDEBUG -g3
 debug : MYFTW
+	./MYFTW .
 
 release : clean app.exe
 
