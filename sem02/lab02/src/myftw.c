@@ -5,7 +5,7 @@
 int myftw(char *pathname)
 {
     node_t *mystack = NULL;
-    char name[MAX_FILE_NAME];
+    char name[MAX_FILE_NAME] = "holoso";
     char *dinname = name;
 
     if (pop(&mystack, &dinname))
@@ -14,6 +14,9 @@ int myftw(char *pathname)
     push(&mystack, "hello");
     push(&mystack, "");
     push(&mystack, "what did you say?");
+    pop(&mystack, &dinname);
+    printf("%s\n", name);
+
     pop(&mystack, &dinname);
     printf("%s\n", name);
 

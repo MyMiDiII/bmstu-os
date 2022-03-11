@@ -43,7 +43,10 @@ int push(node_t **stack, char *name)
 int pop(node_t **stack, char **name)
 {
     if (is_empty(stack))
+    {
+        strcpy(*name, "");
         return -1;
+    }
 
     node_t *elem = *stack;
     *stack = (*stack)->prev;
