@@ -17,8 +17,10 @@ node_t *create_node(char *name)
     if (!node)
         return NULL;
 
-    node->name = malloc(sizeof(char) * strlen(name));
+    int len = strlen(name) + 1;
+    node->name = malloc(sizeof(char) * len);
     strcpy(node->name, name);
+    node->name[len - 1] = '\0';
     node->prev = NULL;
 
     return node;
@@ -50,11 +52,7 @@ int pop(node_t **stack, char **name)
     *stack = (*stack)->prev;
 
     strcpy(*name, elem->name);
-    //printf("%s\n", elem->name);
-    //puts("free name");
     free(elem->name);
-    //puts("free elem");
-    //printf("%p\n", elem);
     free(elem);
 
     return 0;

@@ -3,8 +3,6 @@
 
 #include <stdbool.h>
 
-#define MAX_FILE_NAME 256
-
 typedef struct node node_t;
 
 struct node

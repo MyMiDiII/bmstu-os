@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
+#include <linux/limits.h>
 
 #include "stack.h"
 
@@ -86,18 +87,17 @@ int myftw(char *pathname)
         return -1;
     }
 
-    char name[MAX_FILE_NAME];
+    char name[NAME_MAX + 1];
     char *buf= name;
 
-    int error = 0;
     int depth = 0;
     node_t *stack = NULL;
     push(&stack, pathname);
 
-    while (!is_empty(&stack) && !error)
+    while (!is_empty(&stack))
     {
         pop(&stack, &buf);
-        error = dopath(buf, &depth, &stack);
+        dopath(buf, &depth, &stack);
     }
     
     return 0;
