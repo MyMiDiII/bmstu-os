@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <linux/limits.h>
+#include <errno.h>
 
 #include "stack.h"
 
@@ -30,7 +31,46 @@ int dopath(char *filename, int *depth, node_t **stack)
 
     if (lstat(filename, &statBuf) == -1)
     {
-        printf("Ошибка при получении информации о файле %s!\n", filename);
+        switch (errno)
+        {
+            case EACCES:
+                printf("Запрещен поиск в каталоге %s!\n",
+                        filename);
+                break;
+            case EBADF:
+                printf("Неверный открытый файловый дескриптор %s!\n",
+                        filename);
+                break;
+            case EFAULT:
+                printf("Неверный адрес: %s\n", filename);
+                break;
+            case ELOOP:
+                printf("Много символьных ссылок при определении пути: %s\n!",
+                        filename);
+                break;
+            case ENAMETOOLONG:
+                printf("Слишком длинное значение аргумента: %s\n!", filename);
+                break;
+            case ENOENT:
+                printf("Не существует компонент пути или пустая строка: %s\n!",
+                        filename);
+                break;
+            case ENOMEM:
+                printf("Не хватает памяти: %s\n!", filename);
+                break;
+            case ENOTDIR:
+                printf("Компонент в префиксе не является каталогом: %s\n!",
+                        filename);
+                break;
+            case EOVERFLOW:
+                printf("Размер файла, номер inode или количество блоков не могут быть представлены в виде стандарнтых типов %s\n!",
+                        filename);
+                break;
+            default:
+                printf("Ошибка при получении информации о файле %s!\n",
+                        filename);
+        }
+
         return -1;
     }
 
@@ -91,13 +131,14 @@ int myftw(char *pathname)
     char *buf= name;
 
     int depth = 0;
+    int error = 0;
     node_t *stack = NULL;
     push(&stack, pathname);
 
-    while (!is_empty(&stack))
+    while (!is_empty(&stack) && !error)
     {
         pop(&stack, &buf);
-        dopath(buf, &depth, &stack);
+        error = dopath(buf, &depth, &stack);
     }
     
     return 0;
