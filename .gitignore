@@ -14,7 +14,9 @@
 *.EXE
 *.obj
 *.OBJ
+*.ycm_extra_conf.py
 
 # DIRS
 *Literature/
 *add/
+*out/
