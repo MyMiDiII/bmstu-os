@@ -42,29 +42,30 @@ int dopath(char *filename, int *depth, node_t **stack)
                         filename);
                 break;
             case EFAULT:
-                printf("Неверный адрес: %s\n", filename);
+                printf("Неверный адрес: %s!\n", filename);
                 break;
             case ELOOP:
-                printf("Много символьных ссылок при определении пути: %s\n!",
+                printf("Много символьных ссылок при определении пути: %s!\n",
                         filename);
                 break;
             case ENAMETOOLONG:
-                printf("Слишком длинное значение аргумента: %s\n!", filename);
+                printf("Слишком длинное значение аргумента: %s!\n", filename);
                 break;
             case ENOENT:
-                printf("Не существует компонент пути или пустая строка: %s\n!",
+                printf("Не существует компонент пути или пустая строка: %s!\n",
                         filename);
                 break;
             case ENOMEM:
                 printf("Не хватает памяти: %s\n!", filename);
                 break;
             case ENOTDIR:
-                printf("Компонент в префиксе не является каталогом: %s\n!",
+                printf("Компонент в префиксе не является каталогом: %s!\n",
                         filename);
                 break;
             case EOVERFLOW:
-                printf("Размер файла, номер inode или количество блоков не могут быть представлены в виде стандарнтых типов %s\n!",
-                        filename);
+                printf("Размер файла, номер inode или количество блоков не\
+                        могут быть представлены в виде стандартных типов\
+                        %s!\n", filename);
                 break;
             default:
                 printf("Ошибка при получении информации о файле %s!\n",
@@ -87,14 +88,14 @@ int dopath(char *filename, int *depth, node_t **stack)
     if ((dp = opendir(filename)) == NULL)
     {
         printf("Ошибка при открытии каталога %s!\n", filename);
-        return -1;
+        return 0;
     }
 
     if (chdir(filename) == -1)
     {
         closedir(dp);
         puts("Ошибка при изменении текущего рабочего каталога!");
-        return -1;
+        return 0;
     }
 
     (*depth)++;
@@ -121,12 +122,6 @@ int dopath(char *filename, int *depth, node_t **stack)
 
 int myftw(char *pathname)
 {
-    if (chdir(pathname) == -1)
-    {
-        puts("Ошибка при изменении текущего рабочего каталога!");
-        return -1;
-    }
-
     char name[NAME_MAX + 1];
     char *buf= name;
 
