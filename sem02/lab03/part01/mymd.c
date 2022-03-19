@@ -27,7 +27,7 @@ static int __init md_init(void)
 
 static void __exit md_exit(void)
 {
-    printk("+ mymd: Good by\n");
+    printk(KERN_INFO "mymd: Good by\n");
 }
 
 module_init(md_init);
