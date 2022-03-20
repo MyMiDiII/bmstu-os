@@ -13,8 +13,8 @@ static int __init md_init(void)
 	printk("md2 exported from md1 : %s\n", md1_data);
 	printk("md2 md1_proc() returned string : %s\n", md1_proc());
 
-    //printk("md2 local from md1: %s\n", md1_local());
-    //printk("md2 noexport from md1: %s\n", md1_noexport());	
+    // 1 printk("md2 local from md1: %s\n", md1_local());
+    // 2 printk("md2 noexport from md1: %s\n", md1_noexport());
 
 	return 0;
 }

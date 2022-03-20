@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 make
 echo ">>>>> Загрузка md1.ko..."
