@@ -17,16 +17,17 @@ static int __init md_init(void)
                task->parent->comm, task->parent->pid);
     } while ((task = next_task(task)) != &init_task);
 
-    printk(KERN_INFO "mymd cur - comm: %s - pid: %d, state: %ld,\
- static_prio: %d; parent_comm: %s - ppid: %d\n",
-               current->comm, current->pid, current->state,
-               current->static_prio,
-               current->parent->comm, current->parent->pid);
     return 0;
 }
 
 static void __exit md_exit(void)
 {
+    printk(KERN_INFO "mymd cur - comm: %s - pid: %d, state: %ld,\
+ static_prio: %d; parent_comm: %s - ppid: %d\n",
+               current->comm, current->pid, current->state,
+               current->static_prio,
+               current->parent->comm, current->parent->pid);
+
     printk(KERN_INFO "mymd: Good by\n");
 }
 
