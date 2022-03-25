@@ -1,0 +1,283 @@
+CMDLINE
+./a.out
+
+CWD
+/home/mymidi/01_BMSTU/bmstu-os/sem02/lab04/part01
+
+ENVIRON
+GTK_RC_FILES=/etc/gtk/gtkrc:/home/mymidi/.gtkrc:/home/mymidi/.config/gtkrc
+KONSOLE_DBUS_SERVICE=:1.70
+LC_NAME=en_GB.UTF-8
+LC_NUMERIC=en_GB.UTF-8
+WINDOWID=1
+LC_ADDRESS=en_GB.UTF-8
+GDK_DPI_SCALE=1
+KONSOLE_VERSION=211203
+PWD=/home/mymidi/01_BMSTU/bmstu-os/sem02/lab04/part01
+MAIL=/var/spool/mail/mymidi
+LSCOLORS=Gxfxcxdxbxegedabagacad
+OLDPWD=/home/mymidi/01_BMSTU/bmstu-os/sem02/lab04
+KONSOLE_DBUS_WINDOW=/Windows/1
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session1
+LANG=en_US.UTF-8
+XAUTHORITY=/run/user/1000/xauth_BejQcd
+COLORFGBG=15;0
+MAKEFLAGS=
+PLASMA_USE_QT_SCALING=1
+PAM_KWALLET5_LOGIN=/run/user/1000/kwallet5.socket
+MFLAGS=
+QT_LINUX_ACCESSIBILITY_ALWAYS_ON=1
+WAYLAND_DISPLAY=wayland-0
+XDG_CONFIG_DIRS=/home/mymidi/.config/kdedefaults:/etc/xdg
+XCURSOR_THEME=breeze_cursors
+XDG_SESSION_DESKTOP=KDE
+ZSH=/home/mymidi/.oh-my-zsh
+XDG_SESSION_TYPE=wayland
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+SHELL=/usr/bin/zsh
+SHLVL=1
+PROFILEHOME=
+PATH=/home/mymidi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+LANGUAGE=
+LC_MONETARY=en_GB.UTF-8
+MOTD_SHOWN=pam
+LC_TIME=en_GB.UTF-8
+LC_TELEPHONE=en_GB.UTF-8
+GDK_SCALE=1
+KDE_APPLICATIONS_AS_SCOPE=1
+XDG_SEAT=seat0
+XDG_CURRENT_DESKTOP=KDE
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+DESKTOP_SESSION=plasmawayland
+LESS=-R
+LOGNAME=mymidi
+XDG_VTNR=2
+SYSTEMD_EXEC_PID=513
+DISPLAY=:1
+USER=mymidi
+KDE_SESSION_UID=1000
+KONSOLE_DBUS_SESSION=/Sessions/1
+QT_WAYLAND_FORCE_DPI=140
+LC_MEASUREMENT=en_GB.UTF-8
+XKB_DEFAULT_LAYOUT=us
+PAGER=less
+_=/usr/bin/make
+LC_PAPER=en_GB.UTF-8
+MAKE_TERMOUT=/dev/pts/1
+XDG_RUNTIME_DIR=/run/user/1000
+COLORTERM=truecolor
+MAKE_TERMERR=/dev/pts/1
+XDG_SESSION_CLASS=user
+GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/mymidi/.gtkrc-2.0:/home/mymidi/.config/gtkrc-2.0
+HOME=/home/mymidi
+TERM=xterm-256color
+XDG_SESSION_ID=2
+XCURSOR_SIZE=24
+QT_AUTO_SCREEN_SCALE_FACTOR=0
+SHELL_SESSION_ID=b4685dc5122243d5b0a661b83e5e61b3
+KDE_SESSION_VERSION=5
+KDE_FULL_SESSION=true
+LC_IDENTIFICATION=en_GB.UTF-8
+MAKELEVEL=1
+
+EXE
+/home/mymidi/01_BMSTU/bmstu-os/sem02/lab04/part01/a.out
+
+FD
+0 -> /dev/pts/1
+1 -> /dev/pts/1
+2 -> /dev/pts/1
+3 -> /proc/14742/fd
+4 -> /home/mymidi/01_BMSTU/bmstu-os/sem02/lab04/part01/info.txt
+
+ROOT
+/
+
+STAT
+pid 14742
+уникальный идентификатор процесса
+
+comm (a.out)
+имя исполняемого файла в круглых скобках
+
+state R
+состояние процесса
+
+ppid 14735
+уникальный идентификатор процесса-предка
+
+pgrp 14735
+уникальный идентификатор группы
+
+session 3353
+уникальный идентификатор сессии
+
+tty_nr 34817
+управляющий терминал
+
+tpgid 14735
+уникальный идентификатор группы управляющего терминала
+
+flags 4194304
+флаги
+
+minflt 62
+количество незначительных сбоев, которые возникли при 
+выполнении процесса, и которые не требуют загрузки страницы памяти с 
+диска
+
+cminflt 0
+количество незначительных сбоев, которые возникли при ожидании
+окончания работы процессов-потомков
+
+majflt 0
+количество значительных сбоев, которые возникли при работе
+процесса, и которые потребовали загрузки страницы памяти с диска
+
+cmajflt 0
+количество значительных сбоев, которые возникли при ожидании
+окончания работы процессов-потомков
+
+utime 0
+количество тиков, которые данный процесс провел в режиме
+пользователя
+
+stime 0
+количество тиков, которые данный процесс провел в режиме
+ядра
+
+cutime 0
+количество тиков, которые процесс, ожидающий завершения
+процессов-потомков, провёл в режиме пользователя
+
+cstime 0
+количество тиков, которые процесс, ожидающий завершения
+процессов-потомков, провёл в режиме ядра
+
+priority 20
+для процессов реального времени -- от -2 до -100 (соотв.
+приор. в реальном времени от 1 до 99), для остальных процессов это
+необработанное значение nice в ядре от 0 (высокий) до 39 (низкий)
+(соотв. видимому пользователю диапазону от -20 до 19
+
+nice 0
+значение для nice в диапазоне от 19 (наиболее низкий приоритет
+до -20 (наивысший приоритет)
+
+num_threads 1
+число потоков в данном процессе
+
+itrealvalue 0
+количество мигов до того, как следующий SIGALARM будет
+послан процессу интервальным таймером (c версии 2617 больше не
+поддерживается и установлено в 0)
+
+starttime 643681
+время в тиках запуска процесса после начальной загрузки системы
+
+vsize 2707456
+размер виртуальной памяти в байтах
+
+rss 213
+резидентный размер: количество страниц, которые занимает процесс в
+памяти (включает код, данные и стек, не включает страницы -- по
+требованию и в свопиге)
+
+rsslim 18446744073709551615
+текущий лимит в байтах на резидентный размер процесса
+
+startcode 94242380738560
+адрес, выше которого может выполняться код программы
+
+endcode 94242380741389
+адрес, ниже которого может выполняться код программ
+
+startstack 140721887204512
+адрес начала стека
+
+kstkesp 0
+текущее значение ESP (указателя стека)
+
+kstkeip 0
+текущее значение EIP (указатель команд)
+
+signal 0
+битовая карта ожидающих сигналов (устарела, не предоставляет
+информацию о сигналах реального времени, использовать /proc/[pid]/status)
+
+blocked 0
+битовая карта блокируемых сигналов
+(устарела, аналогично signal)
+
+sigignore 0
+битовая карта игнорируемых сигналов
+(устарела, аналогично signal)
+
+sigcatch 0
+битовая карта перехватываемых сигналов
+(устарела, аналогично signal)
+
+wchan 0
+канал, в котором ожидает процесс 
+
+nswap 0
+количество страниц на своппинге (не обслуживается)
+
+сnswap 0
+суммарное nswap для процессов-потомков (не обслуживается)
+
+exit_signal 17
+сигнал, который будет послан предку, когда процесс завершится
+
+processor 4
+номер процессора, на котором последний раз выполнялся процесс
+
+rt_priority 0
+приоритет планирования реального времени, число в
+диапазоне от 1 до 99 для процессов реального времени, 0 для
+остальных
+
+policy 0
+политика планирования
+
+delayacct_blkio_ticks 0
+суммарные задержки ввода/вывода в тиках
+
+guest_time 0
+гостевое время процесса (время, потраченное на выполнение
+виртуального процессора на гостевой операционной системе) в тиках
+
+cguest_time 0
+гостевое время для потомков процесса в тиках
+
+start_data 94242380758504
+адрес, выше которого размещаются инициализированные и
+неинициализированные (BSS) данные программы
+
+end_data 94242380759648
+адрес, ниже которого размещаются инициализированные и
+неинициализированные (BSS) данные программы
+
+start_brk 94242384642048
+адрес, выше которого куча программы может быть расширена с
+использованием brk()
+
+arg_start 140721887212035
+адрес, выше которого размещаются аргументы командной строки
+(argv)
+
+arg_end 140721887212043
+адрес, ниже которого размещаются аргументы командной строки
+(argv)
+
+env_start 140721887212043
+адрес, выше которого размещается окружение программы
+
+env_end 140721887215600
+адрес, ниже которого размещается окружение программы
+
+exit_code 0
+статус завершения потока в форме, возвращаемой waitpid()
+
+
