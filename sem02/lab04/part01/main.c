@@ -210,6 +210,30 @@ void get_comm_info(const char *proc, FILE *out)
     fclose(f);
 }
 
+void get_task_info(const char *proc, FILE *out)
+{
+    char path[PATH_MAX];
+    snprintf(path, PATH_MAX, "/proc/%s/task", proc);
+
+    DIR *dp = opendir(path);
+    struct dirent *dirp;
+    char full_path[BUF_SIZE + 1];
+    char buf[BUF_SIZE + 1];
+    fprintf(out, "TASK\n");
+
+    while ((dirp = readdir(dp)) != NULL)
+    {
+        if ((strcmp(dirp->d_name, ".") != 0)
+                && (strcmp(dirp->d_name, "..") != 0))
+        {
+            fprintf(out, "%s\n", dirp->d_name);
+        }
+    }
+    fprintf(out, "\n");
+
+    closedir(dp);
+}
+
 void print_page(uint64_t address, uint64_t data, FILE *out)
 {
     fprintf(out, "0x%-16lx : %-16lx %-10ld %-10ld %-10ld %-10ld\n",
@@ -311,6 +335,7 @@ int main(int argc, char **argv)
     get_root_info(id, out);
     get_environ_info(id, out);
     get_fd_info(id, out);
+    get_task_info(id, out);
     get_stat_info(id, out);
     get_io_info(id, out);
     get_maps_info(id, out);
