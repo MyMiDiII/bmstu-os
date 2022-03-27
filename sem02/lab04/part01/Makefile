@@ -1,6 +1,6 @@
 run : build
 	rm -f info.txt
-	./a.out
+	sudo ./a.out
 
 build : main.c
 	gcc main.c
