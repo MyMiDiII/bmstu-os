@@ -2,6 +2,7 @@ CURRENT = $(shell uname -r)
 KDIR = /lib/modules/$(CURRENT)/build
 PWD = $(shell pwd)
 TARGET = seqfile
+#TARGET = fortune
 obj-m := $(TARGET).o
 
 default :
