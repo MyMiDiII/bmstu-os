@@ -17,8 +17,6 @@ static struct proc_dir_entry *fortuneDir;
 static struct proc_dir_entry *fortuneLink;
 
 static char *cookiePot = NULL;
-//static char tmpBuf[COOKIE_POT_SIZE];
-//static char *test = "hello";
 
 static int readInd = 0;
 static int writeInd = 0;
@@ -74,7 +72,7 @@ static const struct seq_operations seqops =
 
 static int fortuneOpen(struct inode *inode, struct file *file)
 {
-    printk(KERN_INFO "fortuneSF: open called\n");
+    printk(KERN_INFO "fortune: open called\n");
     return seq_open(file, &seqops);
 }
 
@@ -102,13 +100,25 @@ static ssize_t fortuneWrite(struct file *file, const char __user *buf,
     return len;
 }
 
+static int fortuneRelease(struct inode *inode, struct file *file)
+{
+    printk(KERN_INFO "fortune: release called\n");
+    return 0;
+}
+
+static ssize_t fortuneRead(struct file *file, char __user *buf,
+                           size_t len, loff_t *fPos)
+{
+    printk(KERN_INFO "fortune: read called\n");
+    return seq_read(file, buf, len, fPos);
+}
 
 static const struct proc_ops fops =
 {
     .proc_open = fortuneOpen,
-    .proc_read = seq_read,
+    .proc_read = fortuneRead,
     .proc_write = fortuneWrite,
-    .proc_release = seq_release
+    .proc_release = fortuneRelease
 };
 
 
@@ -129,11 +139,11 @@ static void freeMemory(void)
 
 static int __init md_init(void)
 {
-    printk(KERN_INFO "fortuneSF: init\n");
+    printk(KERN_INFO "fortune: init\n");
 
     if ((cookiePot = vmalloc(COOKIE_POT_SIZE)) == NULL)
     {
-        printk(KERN_ERR "fortuneSF: memory error\n");
+        printk(KERN_ERR "fortune: memory error\n");
         return -ENOMEM;
     }
 
@@ -141,7 +151,7 @@ static int __init md_init(void)
 
     if ((fortuneDir = proc_mkdir(DIRNAME, NULL)) == NULL)
     {
-        printk(KERN_ERR "fortuneSF: create dir err\n");
+        printk(KERN_ERR "fortune: create dir err\n");
         freeMemory();
 
         return -ENOMEM;
@@ -149,7 +159,7 @@ static int __init md_init(void)
 
     if ((fortuneFile = proc_create(FILENAME, 0666, NULL, &fops)) == NULL)
     {
-        printk(KERN_ERR "fortuneSF: create file err\n");
+        printk(KERN_ERR "fortune: create file err\n");
         freeMemory();
 
         return -ENOMEM;
@@ -157,7 +167,7 @@ static int __init md_init(void)
 
     if ((fortuneLink = proc_symlink(SYMLINK, NULL, DIRNAME)) == NULL)
     {
-        printk(KERN_ERR "fortuneSF: create link err\n");
+        printk(KERN_ERR "fortune: create link err\n");
         freeMemory();
 
         return -ENOMEM;
@@ -171,7 +181,7 @@ static int __init md_init(void)
 
 static void __exit md_exit(void)
 {
-    printk(KERN_INFO "fortuneSF: exit\n");
+    printk(KERN_INFO "fortune: exit\n");
     freeMemory();
 }
 
