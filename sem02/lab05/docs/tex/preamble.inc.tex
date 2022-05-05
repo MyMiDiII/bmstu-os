@@ -1,0 +1,110 @@
+% table of contents
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\large\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill\hfill}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength\cftbeforetoctitleskip{-22pt}
+\setlength\cftaftertoctitleskip{15pt}
+
+% searchable and copyable
+\usepackage{cmap}
+
+% Times New Roman
+\usepackage{pscyr}
+\renewcommand{\rmdefault}{ftm}
+
+% Links
+\def\UrlBreaks{\do\/\do-\do\_}
+\usepackage[nottoc]{tocbibind} % for bib link
+\usepackage[numbers]{natbib}
+\renewcommand*{\bibnumfmt}[1]{#1.}
+
+%% Images
+\usepackage{graphicx}
+\usepackage{wrapfig}
+
+\newcommand{\img}[4] {
+	\begin{figure}[ht!]
+		\center{
+            \includegraphics[height=#1]{../../results/#2}
+            \caption{#3}
+            \label{img:#4}
+        }
+	\end{figure}
+}
+
+%% Captions
+\usepackage[figurename=Рисунок,labelsep=endash,
+            justification=centering]{caption}
+\usepackage{hyphenat}
+
+% Lists
+\usepackage{enumitem}
+\renewcommand{\labelitemi}{$-$}
+\setlist{nosep, leftmargin=\parindent}
+\makeatletter
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+\makeatother
+
+% Text
+\usepackage{amstext}
+\usepackage{ulem}
+\renewcommand{\ULdepth}{1.5pt}
+
+% Formulas
+\DeclareMathOperator*{\argmax}{argmax}
+
+% Tabulars
+\usepackage{threeparttable}
+\usepackage{csvsimple}
+\usepackage{longtable,ltcaption,booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% PDF
+\usepackage{pdfpages}
+
+% Listings
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+\usepackage{verbatim}
+\usepackage[framemethod=tikz]{mdframed}
+
+\mdfdefinestyle{mymdstyle}{
+    innerleftmargin=0mm,
+    innerrightmargin=0mm,
+    innertopmargin=-4pt,
+    innerbottommargin=-9pt,
+    splittopskip=\baselineskip,
+    hidealllines=true,
+    middleextra={
+      \node[anchor=west] at (O|-P)
+        {};
+        },
+    secondextra={
+      \node[anchor=west] at (O|-P)
+        {};},
+}
+
+\surroundwithmdframed[style=mymdstyle]{lstlisting}
+\newmdenv[style=mymdstyle]{mdlisting}
+
+\newcommand{\mylisting}[4] {
+    \noindent
+    {
+    \captionsetup{justification=raggedright,singlelinecheck=off}
+    \begin{lstinputlisting}[
+        caption={#3},
+        label={lst:#4},
+        linerange={#2}
+    ]{../../#1}
+    \end{lstinputlisting}
+}}
+
+\newcommand{\mybreaklisting}[4]{
+    \begin{mdlisting}
+        \captionsetup{justification=raggedright,singlelinecheck=off}
+        \lstinputlisting[label=lst:#4, caption=#3, linerange=#2]{../../#1}
+    \end{mdlisting}
+}
+
