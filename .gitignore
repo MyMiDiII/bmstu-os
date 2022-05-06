@@ -6,8 +6,6 @@
 *.dvi
 *.out
 *.toc
-*report.pdf
-*title.pdf
 
 # FILES
 *.exe
