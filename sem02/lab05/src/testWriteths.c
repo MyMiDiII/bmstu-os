@@ -14,7 +14,6 @@ struct args_struct
 
 void *write_syms(void *args)
 {
-    //sleep(1);
     FILE *fs = fopen("resultths.txt", "w");
 
     struct args_struct *cur_args = (struct args_struct *) args;

@@ -7,7 +7,6 @@
 
 int main(void)
 {
-    //fprintf(stdout, "Program 1.\n");
     int fd = open("alphabet.txt", O_RDONLY);
 
     FILE *fs1 = fdopen(fd, "r");

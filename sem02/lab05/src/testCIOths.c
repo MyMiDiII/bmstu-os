@@ -15,8 +15,6 @@ struct args_struct
 
 void *read_buf(void *args)
 {
-    sleep(1);
-
     struct args_struct *cur_args = (struct args_struct *) args;
     FILE *fs = cur_args->fs;
     char *color = cur_args->color;
@@ -36,7 +34,6 @@ void *read_buf(void *args)
 
 int main(void)
 {
-    //fprintf(stdout, "Program 1 (multithreads).\n");
     int fd = open("alphabet.txt", O_RDONLY);
 
     FILE *fs1 = fdopen(fd, "r");

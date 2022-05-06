@@ -16,8 +16,6 @@ struct args_struct
 
 void *read_buf(void *args)
 {
-    sleep(1);
-
     struct args_struct *cur_args = (struct args_struct *) args;
     int fd = cur_args->fd;
     char *color = cur_args->color;
@@ -36,7 +34,6 @@ void *read_buf(void *args)
 
 int main()
 {
-    //printf("Program 2.\n");
     char c;    
     int fd1 = open("alphabet.txt",O_RDONLY);
     struct args_struct args1 = { .fd = fd1, .color = GREEN };
