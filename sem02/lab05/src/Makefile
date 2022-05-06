@@ -4,10 +4,10 @@ run : build
 	./testKernelIO.out
 	./testKernelIOths.out
 	./testWrite.out
-	cat result.txt
+	@cat result.txt
 	@echo ""
 	./testWriteths.out
-	cat resultths.txt
+	@cat resultths.txt
 	@echo ""
 
 build : testCIO.c testCIOths.c testKernelIO.c testKernelIOths.c

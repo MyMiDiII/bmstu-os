@@ -7,12 +7,7 @@
 #define BLUE  "\033[01;38;05;33m"
 #define CLEAR "\033[0m"
 
-struct args_struct
-{
-    int fd;
-    char * color;
-};
-
+struct args_struct { int fd; char * color; };
 
 void *read_buf(void *args)
 {
@@ -47,9 +42,7 @@ int main()
     read_buf(&args1);
 
     pthread_join(td, NULL);
-
     puts("");
-
     return 0;
 }
 

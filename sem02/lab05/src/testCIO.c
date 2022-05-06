@@ -19,18 +19,15 @@ int main(void)
 
     int flag1 = 1, flag2 = 1;
 
-    while(flag1 == 1 || flag2 == 1)
+    while (flag1 == 1 || flag2 == 1)
     {
         char c;
 
-        flag1 = fscanf(fs1, "%c", &c);
-        if (flag1 == 1)
+        if ((flag1 = fscanf(fs1, "%c", &c)) == 1)
             fprintf(stdout, GREEN "%c" CLEAR, c);
 
-        flag2 = fscanf(fs2, "%c", &c);
-        if (flag2 == 1) 
+        if ((flag2 = fscanf(fs2, "%c", &c)) == 1) 
             fprintf(stdout, BLUE "%c" CLEAR, c); 
-
     }
 
     fprintf(stdout, "\n");

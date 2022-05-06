@@ -8,13 +8,10 @@
 void fileInfo(FILE *fs)
 {
 	struct stat statbuf;
-
 	stat("result.txt", &statbuf);
-	printf("inode: %ld\n", statbuf.st_ino);
+	printf("\033[38;05;214minode: %ld\n", statbuf.st_ino);
 	printf("Общий размер в байтах: %ld\n", statbuf.st_size);
-	printf("Текущая позиция: %ld\n\n", ftell(fs));
-
-    // ??? Текущая позиция?
+	printf("Текущая позиция: %ld\n\n" CLEAR, ftell(fs));
 }
 
 int main(void)
