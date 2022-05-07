@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#define GREEN "\033[01;38;05;46m"
-#define BLUE  "\033[01;38;05;33m"
 #define CLEAR "\033[0m"
 
 void fileInfo(FILE *fs)
@@ -23,7 +21,7 @@ int main(void)
     fileInfo(fs2);
 
     for (char ch = 'a'; ch <= 'z'; ++ch)
-        fprintf(ch % 2 ? fs1 : fs2, "%s%c" CLEAR, ch % 2 ? GREEN : BLUE, ch);
+        fprintf(ch % 2 ? fs1 : fs2, "%c", ch);
 
     fileInfo(fs1);
     fclose(fs1);
@@ -31,7 +29,7 @@ int main(void)
 
     fileInfo(fs2);
     fclose(fs2);
-    fileInfo(fs1);
+    fileInfo(fs2);
 
     return 0;
 }
