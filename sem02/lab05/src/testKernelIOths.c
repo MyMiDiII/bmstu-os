@@ -7,6 +7,8 @@
 #define BLUE  "\033[01;38;05;33m"
 #define CLEAR "\033[0m"
 
+pthread_mutex_t mutex;
+
 struct args_struct { int fd; char * color; };
 
 void *read_buf(void *args)
@@ -17,12 +19,14 @@ void *read_buf(void *args)
 
     int flag = 1;
 
+    pthread_mutex_lock(&mutex);
     while (flag == 1)
     {
         char c;
         if ((flag = read(fd, &c, 1)) == 1)
             printf("%s%c" CLEAR, color, c);
     }
+    pthread_mutex_unlock(&mutex);
 
     return NULL;
 }
@@ -30,10 +34,10 @@ void *read_buf(void *args)
 int main()
 {
     char c;    
-    int fd1 = open("alphabet.txt",O_RDONLY);
+    int fd1 = open("alphabet.txt", O_RDONLY);
     struct args_struct args1 = { .fd = fd1, .color = GREEN };
 
-    int fd2 = open("alphabet.txt",O_RDONLY);
+    int fd2 = open("alphabet.txt", O_RDONLY);
     struct args_struct args2 = { .fd = fd2, .color = BLUE };
 
     pthread_t td;

@@ -14,10 +14,10 @@ void fileInfo(FILE *fs)
 
 int main(void)
 {
-    FILE *fs1 = fopen("result.txt", "w");
+    FILE *fs1 = fopen("result.txt", "a");
     fileInfo(fs1);
 
-    FILE *fs2 = fopen("result.txt", "w");
+    FILE *fs2 = fopen("result.txt", "a");
     fileInfo(fs2);
 
     for (char ch = 'a'; ch <= 'z'; ++ch)

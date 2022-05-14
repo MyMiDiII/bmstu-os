@@ -10,7 +10,7 @@ struct args_struct { char begin; char * color; };
 
 void *write_syms(void *args)
 {
-    FILE *fs = fopen("resultths.txt", "w");
+    FILE *fs = fopen("resultths.txt", "a");
 
     struct args_struct *cur_args = (struct args_struct *) args;
     char begin = cur_args->begin;
