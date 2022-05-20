@@ -86,16 +86,15 @@
 \surroundwithmdframed[style=mymdstyle]{lstlisting}
 \newmdenv[style=mymdstyle]{mdlisting}
 
-\newcommand{\mylisting}[4] {
+\newcommand{\mylisting}[1] {
     \noindent
     {
     \captionsetup{justification=raggedright,singlelinecheck=off}
-    \begin{lstinputlisting}[
-        caption={#3},
-        label={lst:#4},
-        linerange={#2}
-    ]{../../src/#1}
-    \end{lstinputlisting}
+    \lstinputlisting[]{../data/file/#1}
+    %\begin{lstinputlisting}[
+    %    caption
+    %]{../data/file/#1}
+    %\end{lstinputlisting}
 }}
 
 \newcommand{\mybreaklisting}[4]{
