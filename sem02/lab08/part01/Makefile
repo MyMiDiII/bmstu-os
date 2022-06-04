@@ -7,3 +7,4 @@ build: server.out client.out
 
 clean:
 	rm *.out
+	rm name*

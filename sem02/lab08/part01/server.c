@@ -25,6 +25,8 @@ void sighandler(int sig)
 
 int main(void)
 {
+    setbuf(stdout, NULL);
+
     struct sockaddr_un addr;
 
     char buf[BUF_SIZE];
@@ -53,6 +55,8 @@ int main(void)
         return -1;
     }
 
+    puts("Server run");
+
     while (1)
     {
         if ((bytes = recvfrom(sock, buf, sizeof(buf), 0, NULL, NULL)) == -1)
@@ -62,8 +66,30 @@ int main(void)
             return -1;
         }
         buf[bytes] = '\0';
-
         printf("Received message:\n%s\n", buf);
+
+//        struct sockaddr_un cli_addr;
+//        socklen_t addr_size = sizeof(cli_addr);
+//
+//        if ((bytes = recvfrom(sock, buf, sizeof(buf), 0,
+//                    (struct sockaddr*)&cli_addr, &addr_size)) == -1)
+//        {
+//            perror("recvfrom");
+//            cleanup(sock);
+//            return -1;
+//        }
+//        buf[bytes] = '\0';
+//        printf("Received message:\n%s\n", buf);
+//        printf("name %s", cli_addr.sun_path);
+//
+//        snprintf(buf, BUF_SIZE, "Hello!");
+//
+//       if (sendto(sock, buf, strlen(buf), 0,
+//                   (struct sockaddr *)&cli_addr, addr_size) == -1)
+//       {
+//           perror("sentto");
+//           return -1;
+//       }
     }
 
     return 0;

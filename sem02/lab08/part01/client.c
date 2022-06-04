@@ -33,9 +33,9 @@ int main(void)
         perror("sendto");
         return -1;
     }
+    printf("Send msg:\n%s\n", msg);
 
     close(sock);
-    printf("Send msg:\n%s\n", msg);
 
     return 0;
 }
