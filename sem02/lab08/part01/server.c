@@ -59,7 +59,11 @@ int main(void)
 
     while (1)
     {
-        if ((bytes = recvfrom(sock, buf, sizeof(buf), 0, NULL, NULL)) == -1)
+        struct sockaddr_un cli_addr;
+        socklen_t addr_size = sizeof(cli_addr);
+
+        if ((bytes = recvfrom(sock, buf, sizeof(buf), 0,
+                    (struct sockaddr*)&cli_addr, &addr_size)) == -1)
         {
             perror("recvfrom");
             cleanup(sock);
@@ -67,29 +71,16 @@ int main(void)
         }
         buf[bytes] = '\0';
         printf("Received message:\n%s\n", buf);
+        printf("name %s", cli_addr.sun_path);
 
-//        struct sockaddr_un cli_addr;
-//        socklen_t addr_size = sizeof(cli_addr);
-//
-//        if ((bytes = recvfrom(sock, buf, sizeof(buf), 0,
-//                    (struct sockaddr*)&cli_addr, &addr_size)) == -1)
-//        {
-//            perror("recvfrom");
-//            cleanup(sock);
-//            return -1;
-//        }
-//        buf[bytes] = '\0';
-//        printf("Received message:\n%s\n", buf);
-//        printf("name %s", cli_addr.sun_path);
-//
-//        snprintf(buf, BUF_SIZE, "Hello!");
-//
-//       if (sendto(sock, buf, strlen(buf), 0,
-//                   (struct sockaddr *)&cli_addr, addr_size) == -1)
-//       {
-//           perror("sentto");
-//           return -1;
-//       }
+        snprintf(buf, BUF_SIZE, "Hello!");
+
+        if (sendto(sock, buf, strlen(buf), 0,
+                    (struct sockaddr *)&cli_addr, addr_size) == -1)
+        {
+            perror("sentto");
+            return -1;
+        }
     }
 
     return 0;

@@ -25,6 +25,20 @@ int main(void)
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, SOCK_NAME, strlen(SOCK_NAME));
 
+    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        perror("bind");
+        close(sock);
+        return -1;
+    }
+
+    if (connect(sock, (struct sockaddr *)&addr, sizeof(addr) == -1))
+    {
+        perror("connect");
+        close(sock);
+        return -1;
+    }
+
     snprintf(msg, BUF_SIZE, "Message from client with pid = %d\n", getpid());
 
     if (sendto(sock, msg, strlen(msg) + 1, 0,
@@ -34,6 +48,15 @@ int main(void)
         return -1;
     }
     printf("Send msg:\n%s\n", msg);
+
+    int bytes;
+    if ((bytes = recvfrom(sock, msg, sizeof(msg), 0, NULL, NULL)) == -1)
+    {
+        perror("recvfrom");
+        return -1;
+    }
+    msg[bytes] = '\0';
+    printf("Received message:\n%s\n", msg);
 
     close(sock);
 
