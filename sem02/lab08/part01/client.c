@@ -1,69 +1,22 @@
-// Client side implementation of UDP client-server model
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
 #include <sys/un.h>
+#include <unistd.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #include "common.h"
-	
-#define PORT	 8080
-#define MAXLINE 1024
-	
-// Driver code
-int main() {
-    setbuf(stdout, NULL);
-	int sockfd;
-	char buffer[MAXLINE];
-	char *hello = "Hello from client";
-	struct sockaddr_un	 servaddr;
-	
-	// Creating socket file descriptor
-	if ( (sockfd = socket(AF_UNIX, SOCK_DGRAM, 0)) < 0 ) {
-		perror("socket creation failed");
-		exit(EXIT_FAILURE);
-	}
-	
-	memset(&servaddr, 0, sizeof(servaddr));
-		
-	// Filling server information
-    servaddr.sun_family = AF_UNIX;
-    strncpy(servaddr.sun_path, SOCK_NAME, strlen(SOCK_NAME));
-		
-	int n, len;
-		
-	sendto(sockfd, (const char *)hello, strlen(hello),
-		0, (const struct sockaddr *) &servaddr,
-			sizeof(servaddr));
-	printf("Hello message sent.\n");
-			
-    printf("before");
-	n = recvfrom(sockfd, (char *)buffer, MAXLINE, 0, NULL, NULL);
-    printf("after");
-	buffer[n] = '\0';
-	printf("Server : %s\n", buffer);
-	
-	close(sockfd);
-	return 0;
+
+int main(void)
+{
+    socket();
+    bind();
+    sendto();
+    recvfrom();
 }
 
-
-
-//#include <stdio.h>
-//#include <string.h>
-//#include <sys/types.h>
-//#include <sys/socket.h>
-//#include <sys/un.h>
-//#include <unistd.h>
-//#include <signal.h>
-//#include <stdlib.h>
-//
-//#include "common.h"
-//
 //int main(void)
 //{
 //    int sock;
