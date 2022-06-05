@@ -1,10 +1,10 @@
-.PHONY: build
+.PHONY: build clean
 
-build: server.out client.out
+build: clean server.out client.out
 
 %.out: %.c
 	gcc -o $@ $^
 
 clean:
-	rm *.out
-	rm name*
+	-rm *.out
+	-rm *.soc

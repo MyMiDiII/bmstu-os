@@ -7,89 +7,95 @@
 #include <signal.h>
 #include <stdlib.h>
 
+#include <errno.h>
+
+#include "colors.h"
 #include "common.h"
+
+#define CONFIRMATION "Message recieved!" 
+
+static int sockfd;
+
+void cleanup(int sockfd)
+{
+    close(sockfd);
+    unlink(SERV_SOCK_NAME);
+}
+
+void sighand(int sig)
+{
+    cleanup(sockfd);
+    exit(0);
+}
 
 int main(void)
 {
-    socket();
-    bind();
-    recvfrom();
-    sendto();
+    //setbuf(stdout, NULL);
+    if ((sockfd = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
+    {
+        puts(RED "socket error" RESET);
+        return -1;
+    }
+
+    struct sockaddr_un servaddr;
+    servaddr.sun_family = AF_UNIX;
+    strncpy(servaddr.sun_path, SERV_SOCK_NAME, strlen(SERV_SOCK_NAME) + 1);
+
+    if (bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) == -1)
+    {
+        puts(RED "bind error" RESET);
+        close(sockfd);
+        return -1;
+    }
+
+    if (signal(SIGINT, sighand) == SIG_ERR)
+    {
+        puts(RED "signalerror" RESET);
+        cleanup(sockfd);
+        return -1;
+    }
+
+    char proof[BUF_SIZE];
+    strncpy(proof, CONFIRMATION, strlen(CONFIRMATION));
+
+    puts(GRN "Server is ready!" RESET);
+
+    while (1)
+    {
+        char buf[BUF_SIZE];
+        struct sockaddr_un cliaddr;
+        socklen_t addrsize;
+
+        int bytes = recvfrom(sockfd, buf, sizeof(buf), 0,
+                                (struct sockaddr *)&cliaddr, &addrsize);
+        if (bytes == -1)
+        {
+            printf("%d\n", EBADF);
+            printf("%d\n", ECONNREFUSED);
+            printf("%d\n", ENOTCONN);
+            printf("%d\n", ENOTSOCK);
+            printf("%d\n", EAGAIN);
+            printf("%d\n", EINTR);
+            printf("%d\n", EFAULT);
+            printf("%d\n", EINVAL);
+            printf("%d\n", errno);
+            puts(RED "recvfrom error" RESET);
+            cleanup(sockfd);
+            return -1;
+        }
+        buf[bytes] = '\0';
+
+        printf(BMAG "Recieved message: %s%s\n", RESET, buf);
+
+        bytes = sendto(sockfd, proof, strlen(proof), 0,
+                         (struct sockaddr *)&cliaddr, addrsize);
+        if (bytes == -1)
+        {
+            puts(RED "recvfrom error" RESET);
+            cleanup(sockfd);
+            return -1;
+        }
+    }
+
     return 0;
 }
-//static int sock;
-//
-//void cleanup(int sock)
-//{
-//    close(sock);
-//    unlink(SOCK_NAME);
-//}
-//
-//void sighandler(int sig)
-//{
-//    cleanup(sock);
-//    exit(0);
-//}
-//
-//int main(void)
-//{
-//    setbuf(stdout, NULL);
-//
-//    struct sockaddr_un addr;
-//
-//    char buf[BUF_SIZE];
-//    int bytes;
-//
-//    if ((sock = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
-//    {
-//        perror("socket");
-//        return -1;
-//    }
-//
-//    addr.sun_family = AF_UNIX;
-//    strncpy(addr.sun_path, SOCK_NAME, strlen(SOCK_NAME));
-//
-//    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) == -1)
-//    {
-//        perror("bind");
-//        close(sock);
-//        return -1;
-//    }
-//
-//    if (signal(SIGINT, sighandler) == SIG_ERR)
-//    {
-//        perror("signal");
-//        cleanup(sock);
-//        return -1;
-//    }
-//
-//    puts("Server run");
-//
-//    while (1)
-//    {
-//        struct sockaddr_un cli_addr;
-//        socklen_t addr_size = sizeof(cli_addr);
-//
-//        if ((bytes = recvfrom(sock, buf, sizeof(buf), 0,
-//                    (struct sockaddr*)&cli_addr, &addr_size)) == -1)
-//        {
-//            perror("recvfrom");
-//            cleanup(sock);
-//            return -1;
-//        }
-//        buf[bytes] = '\0';
-//        printf("Received message:\n%s\n", buf);
-//        printf("name %s", cli_addr.sun_path);
-//
-//        snprintf(buf, BUF_SIZE, "Hello!");
-//
-//        if (sendto(sock, buf, strlen(buf), 0,
-//                    (struct sockaddr *)&cli_addr, addr_size) == -1)
-//        {
-//            perror("sentto");
-//            return -1;
-//        }
-//    }
-//
-//    return 0;
-//}
