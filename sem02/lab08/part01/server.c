@@ -81,7 +81,7 @@ int main(void)
                          (struct sockaddr *)&cliaddr, addrsize);
         if (bytes == -1)
         {
-            puts(BRED "recvfrom error" RESET);
+            puts(BRED "sendto error" RESET);
             cleanup(sockfd);
             return -1;
         }

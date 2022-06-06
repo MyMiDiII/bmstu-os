@@ -48,7 +48,7 @@ int main(void)
                           (struct sockaddr *)&servaddr, sizeof(servaddr));
     if (bytes == -1)
     {
-        puts(RED "recvfrom error" RESET);
+        puts(RED "sendto error" RESET);
         cleanup(sockfd, cliaddr.sun_path);
         return -1;
     }
