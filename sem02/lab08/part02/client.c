@@ -69,7 +69,7 @@ int main(void)
         int bytes = send(sockfd, full_msg, strlen(full_msg), 0);
         if (bytes == -1)
         {
-            puts(RED "recvfrom error" RESET);
+            puts(RED "send error" RESET);
             close(sockfd);
             return -1;
         }
@@ -83,6 +83,12 @@ int main(void)
             close(sockfd);
             return -1;
         }
+        //else if (bytes == 0)
+        //{
+        //    puts(RED "\nServer is disconnected" RESET);
+        //    close(sockfd);
+        //    return -1;
+        //}
         buf[bytes] = '\0';
 
         printf(BBLU "Server message:\n%s%s%s\n", WHT, buf, RESET);
