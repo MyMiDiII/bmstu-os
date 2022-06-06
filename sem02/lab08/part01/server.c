@@ -30,10 +30,9 @@ void sighand(int sig)
 
 int main(void)
 {
-    //setbuf(stdout, NULL);
     if ((sockfd = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
     {
-        puts(RED "socket error" RESET);
+        puts(BRED "socket error" RESET);
         return -1;
     }
 
@@ -43,14 +42,14 @@ int main(void)
 
     if (bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) == -1)
     {
-        puts(RED "bind error" RESET);
+        puts(BRED "bind error" RESET);
         close(sockfd);
         return -1;
     }
 
     if (signal(SIGINT, sighand) == SIG_ERR)
     {
-        puts(RED "signalerror" RESET);
+        puts(BRED "signalerror" RESET);
         cleanup(sockfd);
         return -1;
     }
@@ -58,44 +57,35 @@ int main(void)
     char proof[BUF_SIZE];
     strncpy(proof, CONFIRMATION, strlen(CONFIRMATION));
 
-    puts(GRN "Server is ready!" RESET);
+    puts(BGRN "Server is ready!" RESET);
 
     while (1)
     {
         char buf[BUF_SIZE];
         struct sockaddr_un cliaddr;
-        socklen_t addrsize;
+        socklen_t addrsize = sizeof(cliaddr);
 
         int bytes = recvfrom(sockfd, buf, sizeof(buf), 0,
                                 (struct sockaddr *)&cliaddr, &addrsize);
         if (bytes == -1)
         {
-            printf("%d\n", EBADF);
-            printf("%d\n", ECONNREFUSED);
-            printf("%d\n", ENOTCONN);
-            printf("%d\n", ENOTSOCK);
-            printf("%d\n", EAGAIN);
-            printf("%d\n", EINTR);
-            printf("%d\n", EFAULT);
-            printf("%d\n", EINVAL);
-            printf("%d\n", errno);
-            puts(RED "recvfrom error" RESET);
+            puts(BRED "recvfrom error" RESET);
             cleanup(sockfd);
             return -1;
         }
         buf[bytes] = '\0';
 
-        printf(BMAG "Recieved message: %s%s\n", RESET, buf);
+        printf(BCYN "\nRecieved message:\n%s%s%s\n", WHT, buf, RESET);
 
         bytes = sendto(sockfd, proof, strlen(proof), 0,
                          (struct sockaddr *)&cliaddr, addrsize);
         if (bytes == -1)
         {
-            puts(RED "recvfrom error" RESET);
+            puts(BRED "recvfrom error" RESET);
             cleanup(sockfd);
             return -1;
         }
-    }
 
-    return 0;
+        printf(BBLU "Sent confirmation:\n%s%s%s\n", WHT, proof, RESET);
+    }
 }

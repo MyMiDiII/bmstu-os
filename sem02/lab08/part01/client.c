@@ -27,9 +27,8 @@ int main(void)
 
     struct sockaddr_un cliaddr;
     cliaddr.sun_family = AF_UNIX;
-    strncpy(cliaddr.sun_path, CLI_SOCK_NAME, strlen(CLI_SOCK_NAME) + 1);
-    //snprintf(cliaddr.sun_path, sizeof(cliaddr.sun_path),
-    //             CLI_SOCK_NAME, getpid());
+    snprintf(cliaddr.sun_path, sizeof(cliaddr.sun_path),
+                CLI_SOCK_NAME, getpid());
 
     if (bind(sockfd, (struct sockaddr *) &cliaddr, sizeof(cliaddr)) == -1)
     {
@@ -43,21 +42,20 @@ int main(void)
     strncpy(servaddr.sun_path, SERV_SOCK_NAME, strlen(SERV_SOCK_NAME) + 1);
 
     char msg[BUF_SIZE];
-    snprintf(msg, BUF_SIZE, "Message from client with pid = %d\n", getpid());
+    snprintf(msg, BUF_SIZE, "Message from client with pid = %d", getpid());
 
-    int bytes = sendto(sockfd, msg, strlen(msg), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
+    int bytes = sendto(sockfd, msg, strlen(msg), 0,
+                          (struct sockaddr *)&servaddr, sizeof(servaddr));
     if (bytes == -1)
     {
         puts(RED "recvfrom error" RESET);
         cleanup(sockfd, cliaddr.sun_path);
         return -1;
     }
-    printf(CYN "Sent message:\n%s%s\n", RESET, msg);
+    printf(BCYN "Sent message:\n%s%s%s\n", WHT, msg, RESET);
 
     char buf[BUF_SIZE];
-    puts("here");
     bytes = recvfrom(sockfd, buf, sizeof(buf), 0, NULL, NULL);
-    puts("or here");
     if (bytes == -1)
     {
         puts(RED "recvfrom error" RESET);
@@ -66,8 +64,7 @@ int main(void)
     }
     buf[bytes] = '\0';
 
-    printf(GRN "Server message: %s%s\n", RESET, buf);
-    sleep(3);
+    printf(BBLU "Server message:\n%s%s%s\n", WHT, buf, RESET);
 
     cleanup(sockfd, cliaddr.sun_path);
     return 0;
