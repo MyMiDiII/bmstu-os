@@ -12,6 +12,7 @@
 #include "colors.h"
 
 #define MAX_SOCK_NUM 3
+#define MAX_SOCK_LEN MAX_SOCK_NUM + 1
 #define CONFIRMATION "Message recieved!" 
 
 static int sockfd;
@@ -51,7 +52,7 @@ int main(void)
         return -1;
     }
 
-    struct pollfd sock_set[MAX_SOCK_NUM];
+    struct pollfd sock_set[MAX_SOCK_LEN];
     sock_set[0].fd = sockfd;
     sock_set[0].events = POLLIN;
     sock_set[0].revents = 0;
@@ -59,6 +60,7 @@ int main(void)
 
     char proof[BUF_SIZE];
     strncpy(proof, CONFIRMATION, strlen(CONFIRMATION) + 1);
+    int first_over = 1;
 
     puts(BGRN "Server is ready!" RESET);
 
@@ -73,7 +75,7 @@ int main(void)
             return -1;
         }
 
-        if (sock_set[0].revents & POLLIN)
+        if (cur_num < MAX_SOCK_LEN && (sock_set[0].revents & POLLIN))
         {
             puts(BGRN "New connection" RESET);
 
@@ -85,20 +87,17 @@ int main(void)
                 return -1;
             }
 
-            if (cur_num < MAX_SOCK_NUM)
-            {
-                sock_set[cur_num].fd = new_sock;
-                sock_set[cur_num].events = POLLIN;
-                sock_set[cur_num].revents = 0;
+            sock_set[cur_num].fd = new_sock;
+            sock_set[cur_num].events = POLLIN;
+            sock_set[cur_num].revents = 0;
 
-                printf(BGRN "Client #%d connected%s\n", cur_num, RESET);
-                cur_num++;
-            }
-            else
-            {
-                puts(BYEL "No more sockets for clients" RESET);
-                close(new_sock);
-            }
+            printf(BGRN "Client #%d connected%s\n", cur_num, RESET);
+            cur_num++;
+        }
+        else if (first_over && (cur_num == MAX_SOCK_LEN))
+        {
+            puts(BYEL "No more sockets for clients" RESET);
+            first_over = 0;
         }
 
         for (int i = 1; i < cur_num; ++i)
@@ -113,12 +112,16 @@ int main(void)
                     printf("Client #%d is disconnected\n", i);
                     close(sock_set[i].fd);
                     if (i < cur_num - 1)
-                        sock_set[i--] = sock_set[cur_num-- - 1];
+                        sock_set[i] = sock_set[cur_num - 1];
+                    i--;
+                    cur_num--;
+                    first_over = 1;
                 }
                 else
                 {
                     msg[bytes] = '\0';
-                    printf("Recieved message by client #%d: %s\n", i, msg);
+                    printf(BCYN "Recieved message by client #%d:\n%s%s%s\n",
+                                i, WHT, msg, RESET);
 
                     bytes = send(sock_set[i].fd, proof, strlen(proof), 0);
                     if (bytes == -1)
@@ -133,73 +136,3 @@ int main(void)
 
     return 0;
 }
-
-
-//FD_ZERO(&set);
-//FD_SET(sock, &set);
-//
-//max_sock = sock;
-//for (int i = 0; i < MAX_SOCK_NUM; ++i)
-//{
-//    int cur_sock = sock_arr[i];
-//
-//    if (cur_sock > 0)
-//    {
-//        FD_SET(cur_sock, &set);
-//        max_sock = cur_sock > max_sock ? cur_sock : max_sock;
-//    }
-//}
-//
-//if (select(max_sock + 1, &set, NULL, NULL, NULL) == -1)
-//{
-//    perror("select");
-//    return -1;
-//}
-//
-//if (FD_ISSET(sock, &set))
-//{
-//    puts("New connection");
-//
-//    if ((new_sock = accept(sock, NULL, NULL)) == -1)
-//    {
-//        perror("accept");
-//        return -1;
-//    }
-//
-//    int flag = 1;
-//
-//    for (int i = 0; i < MAX_SOCK_NUM && flag; ++i)
-//    {
-//        if (sock_arr[i] == 0)
-//        {
-//            sock_arr[i] = new_sock;
-//            printf("Client #%d\n", i);
-//            flag = 0;
-//        }
-//    }
-//
-//    if (flag)
-//        puts("Max sockets num");
-//}
-//
-//for (int i = 0; i < MAX_SOCK_NUM; ++i)
-//{
-//    if (sock_arr[i] && FD_ISSET(sock_arr[i], &set))
-//    {
-//        char msg[BUF_SIZE];
-//        int bytes;
-//
-//        if ((bytes = recvfrom(sock_arr[i], msg,
-//                        sizeof(msg), 0, NULL, NULL)) == 0)
-//        {
-//            printf("Client #%d is disconnected\n", i);
-//            close(sock_arr[i]);
-//            sock_arr[i] = 0;
-//        }
-//        else
-//        {
-//            msg[bytes] = '\0';
-//            printf("Msg from client #%d: %s\n", i, msg);
-//        }
-//    }
-//}

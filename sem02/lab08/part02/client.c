@@ -83,12 +83,12 @@ int main(void)
             close(sockfd);
             return -1;
         }
-        //else if (bytes == 0)
-        //{
-        //    puts(RED "\nServer is disconnected" RESET);
-        //    close(sockfd);
-        //    return -1;
-        //}
+        else if (bytes == 0)
+        {
+            puts(RED "Server is disconnected" RESET);
+            close(sockfd);
+            return -1;
+        }
         buf[bytes] = '\0';
 
         printf(BBLU "Server message:\n%s%s%s\n", WHT, buf, RESET);
