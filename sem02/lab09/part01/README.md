@@ -72,6 +72,6 @@ sudo insmod mytasklet.ko
 Дополнительно:
 
 ```
-cat /proc/interrupts | grep "test"
+$ cat /proc/interrupts | grep "test"
 1:  0  0  0  0  55511  0  0  0  IR-IO-APIC  1-edge  i8042, test_my_irq_handler
 ```
