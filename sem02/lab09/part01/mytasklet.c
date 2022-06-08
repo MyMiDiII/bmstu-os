@@ -77,7 +77,10 @@ static int __init my_tasklet_init(void)
                       "test_my_irq_handler", (void *) my_irq_handler);
 
     if (ret)
+    {
         printk(KERN_ERR "MyTasklet: request_irq error");
+        kfree(my_tasklet);
+    }
     else
         printk(KERN_ERR "MyTasklet: loaded");
 
