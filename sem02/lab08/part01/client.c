@@ -66,6 +66,7 @@ int main(void)
 
     printf(BBLU "Server message:\n%s%s%s\n", WHT, buf, RESET);
 
+    sleep(10);
     cleanup(sockfd, cliaddr.sun_path);
     return 0;
 }
