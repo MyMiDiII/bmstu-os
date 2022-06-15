@@ -22,6 +22,7 @@ int keyboard_irq = 1;
 void work1_func(struct work_struct *work)
 {
     int code;
+    printk(KERN_INFO "MyWorkQueue: work1 begin");
 
     code = inb(0x60);
     printk(KERN_INFO "MyWorkQueue: key code is %d", code);
@@ -29,14 +30,14 @@ void work1_func(struct work_struct *work)
     if (code < 84)
         printk(KERN_INFO "MyWorkQueue: the key is %s", ascii[code]);
 
-    printk(KERN_INFO "MyWorkQueue: work1 sleep begin");
-    msleep(10);
-    printk(KERN_INFO "MyWorkQueue: work1 sleep end");
+    printk(KERN_INFO "MyWorkQueue: work1 end");
 }
 
 void work2_func(struct work_struct *work)
 {
-    printk(KERN_INFO "MyWorkQueue: work2 data is %lld", work->data.counter);
+    printk(KERN_INFO "MyWorkQueue: work2 sleep begin");
+    msleep(10);
+    printk(KERN_INFO "MyWorkQueue: work2 sleep end");
 }
 
 irqreturn_t my_irq_handler(int irq, void *dev)
