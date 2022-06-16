@@ -16,25 +16,22 @@ int keyboard_irq = 1;
 
 void my_tasklet_func(unsigned long data)
 {
-    int code;
-
     printk(KERN_INFO "MyTasklet: -------------------------");
     printk(KERN_INFO "MyTasklet: tasklet count = %u", my_tasklet->count.counter);
     printk(KERN_INFO "MyTasklet: tasklet state = %lu", my_tasklet->state);
 
-    printk(KERN_INFO "MyTasklet: %s", (char *) data);
+    printk(KERN_INFO "MyTasklet: key code is %d", data);
 
-    code = inb(0x60);
-    printk(KERN_INFO "MyTasklet: key code is %d", code);
-
-    if (code < 84)
-        printk(KERN_INFO "MyTasklet: the key is %s", ascii[code]);
+    if (data < 84)
+        printk(KERN_INFO "MyTasklet: the key is %s", ascii[data]);
 
     printk(KERN_INFO "MyTasklet: -------------------------");
 }
 
 irqreturn_t my_irq_handler(int irq, void *dev)
 {
+    int code;
+
     printk(KERN_INFO "MyTasklet: my_irq_handler");
 
     if (irq == keyboard_irq)
@@ -44,6 +41,8 @@ irqreturn_t my_irq_handler(int irq, void *dev)
                    my_tasklet->state);
         printk(KERN_INFO "MyTasklet: scheduling");
 
+        code = inb(0x60);
+        my_tasklet->data = code;
 
         tasklet_schedule(my_tasklet);
 
