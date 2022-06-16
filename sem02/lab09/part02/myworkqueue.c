@@ -13,18 +13,26 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Maslova Marina");
 
+typedef struct
+{
+    struct work_struct work;
+    int code;
+} my_work_struct_t;
+
 static struct workqueue_struct *my_wq;
 
-static struct work_struct *work1, *work2;
+static my_work_struct_t *work1;
+static struct work_struct *work2;
 
 int keyboard_irq = 1;
 
 void work1_func(struct work_struct *work)
 {
-    int code;
+    my_work_struct_t *my_work = (my_work_struct_t *)work;
+    int code = my_work->code;
+
     printk(KERN_INFO "MyWorkQueue: work1 begin");
 
-    code = inb(0x60);
     printk(KERN_INFO "MyWorkQueue: key code is %d", code);
 
     if (code < 84)
@@ -42,6 +50,7 @@ void work2_func(struct work_struct *work)
 
 irqreturn_t my_irq_handler(int irq, void *dev)
 {
+    int code;
     printk(KERN_INFO "MyWorkQueue: my_irq_handler");
 
     if (irq == keyboard_irq)
@@ -49,7 +58,10 @@ irqreturn_t my_irq_handler(int irq, void *dev)
         printk(KERN_INFO "MyWorkQueue: called by keyboard_irq");
         printk(KERN_INFO "MyWorkQueue: queue name is %s", my_wq->name);
 
-        queue_work(my_wq, work1);
+        code = inb(0x60);
+        work1->code = code;
+
+        queue_work(my_wq, (struct work_struct *)work1);
         queue_work(my_wq, work2);
 
         return IRQ_HANDLED;
@@ -73,7 +85,7 @@ static int __init my_workqueue_init(void)
         return -1;
     }
 
-    work1 = kmalloc(sizeof(struct work_struct), GFP_KERNEL);
+    work1 = kmalloc(sizeof(my_work_struct_t), GFP_KERNEL);
     if (work1 == NULL)
     {
         printk(KERN_ERR "MyWorkQueue: work1 alloc error");
@@ -90,7 +102,7 @@ static int __init my_workqueue_init(void)
         return -1;
     }
 
-    INIT_WORK(work1, work1_func);
+    INIT_WORK((struct work_struct *)work1, work1_func);
     INIT_WORK(work2, work2_func);
 
     ret = request_irq(keyboard_irq, my_irq_handler, IRQF_SHARED,
